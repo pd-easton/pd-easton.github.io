@@ -114,6 +114,11 @@
             <h2>Bakugan</h2>
             <div class="description">BST Bakugan nhỏ của Easton</div>
         </div>
+        <div class="product" onclick="directTo('./optimorphs')">
+            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS7-1HG5H768LcxQM-hQJHUeWnFa1hhlVgyNMJ-uoFWc201xXHXGwdwM_jaFwlUYVkkA84&usqp=CAU" alt="(gen1) Neo Dragonoid">
+            <h2>Optimorphs</h2>
+            <div class="description">BST Chiến xa nhỏ của Easton</div>
+        </div>
     </div>
 
     <div class="lightbox" id="lightbox" onclick="closeImage()">
@@ -147,8 +152,8 @@
             lightbox.classList.remove('active');
         }
 
-        function directTo() {
-            location.href ="./bakugan";
+        function directTo($urllink) {
+            location.href = $urllink;
         }
     </script>
 
