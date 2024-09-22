@@ -106,6 +106,8 @@
     
     <div class="search-container">
         <input type="text" id="search" placeholder="Tìm kiếm sản phẩm..." onkeyup="filterProducts()">
+        <input type="text" id="kwpassword" placeholder="key" onkeyup="showOldPrices()">
+
     </div>
 
     <div class="product-container" id="productList">
@@ -165,7 +167,7 @@
             <p class="price" hidden>Giá bán: 250.000 VNĐ</p>
             <div class="description">Mô tả: Dharak kèm gear, cánh bị lỏng nên bung cái tự động gập xuống, không cần bẻ xuống để gắn gear</div>
         </div>
-        <div class="product" onclick="showImage('./comingsoon.avif')">
+        <div class="product" onclick="showImage('./images/jetkor.jpg')">
             <img src="./images/jetkor.jpg" alt="(gen1) Jetkor (gear fake coming soon)">
             <h2>(gear) Jetkor (fake coming soon)</h2>
             <p class="old-price">Giá mua: 90</p>
@@ -255,6 +257,24 @@
         }
 
         document.getElementById("real-price-lumagrowl").innerHTML = 170 + 130;
+
+        const oldPrices = document.getElementsByClassName("old-price");
+
+        Array.from(oldPrices).forEach(function(oldPrice) {
+            oldPrice.hidden = true;
+        });
+
+        function showOldPrices() {
+            const kwInput = document.getElementById('kwpassword').value;
+            Array.from(oldPrices).forEach(function(oldPrice) {
+                oldPrice.hidden = true;
+            });
+            if (kwInput == "pd-easton") {
+                Array.from(oldPrices).forEach(function(oldPrice) {
+                    oldPrice.hidden = false;
+                });
+            }
+        }
     </script>
 
 </body>
