@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Danh Sách Sản Phẩm</title>
+    <title>Trang web của Easton</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -102,124 +102,22 @@
 </head>
 <body>
 
-    <h1>Danh sách Bakugan sở hữu</h1>
+    <h1>Góc nhỏ của Easton</h1>
     
     <div class="search-container">
-        <input type="text" id="search" placeholder="Tìm kiếm sản phẩm..." onkeyup="filterProducts()">
+        <input type="text" id="search" placeholder="Tìm kiếm danh mục.." onkeyup="filterProducts()">
     </div>
 
     <div class="product-container" id="productList">
-        <div class="product" onclick="showImage('./images/neodragonoid.jpg')">
-            <img src="./images/neodragonoid.jpg" alt="(gen1) Neo Dragonoid">
-            <h2>(gen1) Neo Dragonoid</h2>
-            <p class="old-price">Giá mua: 115</p>
-            <p class="price" hidden>Giá bán: 150.000 VNĐ</p>
-            <div class="description">Mô tả: Set xác 115k, bkg-gen1 đầu tiên</div>
+        <div class="product" onclick="directTo('./bakugan')">
+            <img src="https://resizing.flixster.com/bL56BuerJOf2KMu2Q1fUT7Lar40=/fit-in/705x460/v2/https://resizing.flixster.com/-XZAfHZM39UwaGJIFWKAE8fS0ak=/v3/t/assets/p185811_b_h10_ah.jpg" alt="(gen1) Neo Dragonoid">
+            <h2>Bakugan</h2>
+            <div class="description">BST Bakugan nhỏ của Easton</div>
         </div>
-        <div class="product" onclick="showImage('./images/lumagrowl.jpg')">
-            <img src="./images/lumagrowl.jpg" alt="(gen1) Lumagrowl (special)">
-            <h2>(gen1) Lumagrowl (special)</h2>
-            <p class="old-price">Giá mua: <span id="real-price-lumagrowl">170</span></p>
-            <p class="price" hidden>Giá bán: 200.000 VNĐ</p>
-            <div class="description">Mô tả: Phiên bản lai haos + darkus (zin).</div>
-        </div>
-        <div class="product" onclick="showImage('./images/dharak.jpg')">
-            <img src="./images/dharak.jpg" alt="(gen1) Dharak">
-            <h2>(gen1) Dharak</h2>
-            <p class="old-price">Giá mua: 200</p>
-            <p class="price" hidden>Giá bán: 150.000 VNĐ</p>
-            <div class="description">Mô tả: Dharak nguyên bản</div>
-        </div>
-        <div class="product" onclick="showImage('./images/dharakclear_1_1.jpg')">
-            <img src="./images/dharakclear_1_1.jpg" alt="(gen1) Dharak (clear) hình 1">
-            <h2>(gen1) Dharak (clear) hình 1</h2>
-            <p class="old-price">Giá mua: 700</p>
-            <p class="price" hidden>Giá bán: 160.000 VNĐ</p>
-            <div class="description">Mô tả: 700k lận đó :|</div>
-        </div>
-        <div class="product" onclick="showImage('./images/dharakclear_1_2.jpg')">
-            <img src="./images/dharakclear_1_2.jpg" alt="(gen1) Dharak (clear) hình 2">
-            <h2>(gen1) Dharak (clear) hình 2</h2>
-            <p class="old-price">Giá mua: 0</p>
-            <p class="price" hidden>Giá bán: 160.000 VNĐ</p>
-            <div class="description">Mô tả: 700k lận đó :|</div>
-        </div>
-        <div class="product" onclick="showImage('./images/dharakcustom.jpg')">
-            <img src="./images/dharakcustom.jpg" alt="(gen1) Dharak (custom 1)">
-            <h2>(gen1) Dharak (custom 1)</h2>
-            <p class="old-price">Giá mua: 350</p>
-            <p class="price" hidden>Giá bán: 200.000 VNĐ</p>
-            <div class="description">Mô tả: Dharak tự custom màu Arcylic</div>
-        </div>
-        <div class="product" onclick="showImage('./images/dharakpaintxauvl.jpg')">
-            <img src="./images/dharakpaintxauvl.jpg" alt="(gen1) Dharak (custom 2)">
-            <h2>(gen1) Dharak (custom 2)</h2>
-            <p class="old-price">Giá mua: 100</p>
-            <p class="price" hidden>Giá bán: 190.000 VNĐ</p>
-            <div class="description">Mô tả: paint xauvl</div>
-        </div>
-        <div class="product" onclick="showImage('./images/dharakgear.jpg')">
-            <img src="./images/dharakgear.jpg" alt="(gen1) Dharak (gear)">
-            <h2>(gen1) Dharak (gear)</h2>
-            <p class="old-price">Giá mua: 500</p>
-            <p class="price" hidden>Giá bán: 250.000 VNĐ</p>
-            <div class="description">Mô tả: Dharak kèm gear, cánh bị lỏng nên bung cái tự động gập xuống, không cần bẻ xuống để gắn gear</div>
-        </div>
-        <div class="product" onclick="showImage('./comingsoon.avif')">
-            <img src="./images/jetkor.jpg" alt="(gen1) Jetkor (gear fake coming soon)">
-            <h2>(gear) Jetkor (fake coming soon)</h2>
-            <p class="old-price">Giá mua: 90</p>
-            <p class="price" hidden>Giá bán: 250.000 VNĐ</p>
-            <div class="description">Mô tả: fake đầu tiên</div>
-        </div>
-        <div class="product" onclick="showImage('./comingsoon.avif')">
-            <img src="./comingsoon.avif" alt="(gen2) Serpillious (clear coming soon)">
-            <h2>(gen2) Serpillious (clear coming soon)</h2>
-            <p class="old-price">Giá mua: 630</p>
-            <p class="price" hidden>Giá bán: 250.000 VNĐ</p>
-            <div class="description">Mô tả: gen2 đầu tiên</div>
-        </div>
-        <div class="product" onclick="showImage('./images/flaredragaon.jpg')">
-            <img src="./images/flaredragaon.jpg" alt="(tech) Flare Dragaon">
-            <h2>(tech) Flare Dragaon</h2>
-            <p class="old-price">Giá mua: 200</p>
-            <p class="price" hidden>Giá bán: 250.000 VNĐ</p>
-            <div class="description">Mô tả: tech đầu tiên</div>
-        </div>
-        <div class="product" onclick="showImage('./images/saintaquos.jpg')">
-            <img src="./images/saintaquos.jpg" alt="(tech) Saint Aquos (clear)">
-            <h2>(tech) Saint Aquos (clear)</h2>
-            <p class="old-price">Giá mua: 150</p>
-            <p class="price" hidden>Giá bán: 300.000 VNĐ</p>
-            <div class="description">Mô tả: clear đầu tiên</div>
-        </div>
-        <div class="product" onclick="showImage('./images/vanfalco.jpg')">
-            <img src="./images/vanfalco.jpg" alt="(tech) Van Falco (clear)">
-            <h2>(tech) Van Falco (clear)</h2>
-            <p class="old-price">Giá mua: 150</p>
-            <p class="price" hidden>Giá bán: 150.000 VNĐ</p>
-            <div class="description">Mô tả: </div>
-        </div>
-        <div class="product" onclick="showImage('./images/kinlanleoness.jpg')">
-            <img src="./images/kinlanleoness.jpg" alt="(tech) Kinlan Leoness (clear)">
-            <h2>(tech) Kinlan Leoness (clear)</h2>
-            <p class="old-price">Giá mua: 250</p>
-            <p class="price" hidden>Giá bán: 180.000 VNĐ</p>
-            <div class="description">Mô tả: </div>
-        </div>
-        <div class="product" onclick="showImage('./images/blanshoult.jpg')">
-            <img src="./images/blanshoult.jpg" alt="(tech) Bland Shoult">
-            <h2>(tech) Bland Shoult</h2>
-            <p class="old-price">Giá mua: 150</p>
-            <p class="price" hidden>Giá bán: 200.000 VNĐ</p>
-            <div class="description">Mô tả: Thiện lương của Dio</div>
-        </div>
-        <div class="product" onclick="showImage('./images/diosivac.jpg')">
-            <img src="./images/diosivac.jpg" alt="(tech) Dio Sivac">
-            <h2>(tech) Dio Sivac</h2>
-            <p class="old-price">Giá mua: 50</p>
-            <p class="price" hidden>Giá bán: 250.000 VNĐ</p>
-            <div class="description">Mô tả: Bản ngã của Bland Shoult</div>
+        <div class="product" onclick="directTo('./optimorphs')">
+            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS7-1HG5H768LcxQM-hQJHUeWnFa1hhlVgyNMJ-uoFWc201xXHXGwdwM_jaFwlUYVkkA84&usqp=CAU" alt="(gen1) Neo Dragonoid">
+            <h2>Optimorphs</h2>
+            <div class="description">BST Chiến xa nhỏ của Easton</div>
         </div>
     </div>
 
@@ -254,7 +152,9 @@
             lightbox.classList.remove('active');
         }
 
-        document.getElementById("real-price-lumagrowl").innerHTML = 170 + 130;
+        function directTo($urllink) {
+            location.href = $urllink;
+        }
     </script>
 
 </body>

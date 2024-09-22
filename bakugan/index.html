@@ -119,7 +119,7 @@
         <div class="product" onclick="showImage('./images/lumagrowl.jpg')">
             <img src="./images/lumagrowl.jpg" alt="(gen1) Lumagrowl (special)">
             <h2>(gen1) Lumagrowl (special)</h2>
-            <p class="old-price">Giá mua: 170</p>
+            <p class="old-price">Giá mua: <span id="real-price-lumagrowl">170</span></p>
             <p class="price" hidden>Giá bán: 200.000 VNĐ</p>
             <div class="description">Mô tả: Phiên bản lai haos + darkus (zin).</div>
         </div>
@@ -166,7 +166,7 @@
             <div class="description">Mô tả: Dharak kèm gear, cánh bị lỏng nên bung cái tự động gập xuống, không cần bẻ xuống để gắn gear</div>
         </div>
         <div class="product" onclick="showImage('./comingsoon.avif')">
-            <img src="./comingsoon.avif" alt="(gen1) Jetkor (gear fake coming soon)">
+            <img src="./images/jetkor.jpg" alt="(gen1) Jetkor (gear fake coming soon)">
             <h2>(gear) Jetkor (fake coming soon)</h2>
             <p class="old-price">Giá mua: 90</p>
             <p class="price" hidden>Giá bán: 250.000 VNĐ</p>
@@ -253,6 +253,8 @@
             const lightbox = document.getElementById('lightbox');
             lightbox.classList.remove('active');
         }
+
+        document.getElementById("real-price-lumagrowl").innerHTML = 170 + 130;
     </script>
 
 </body>
