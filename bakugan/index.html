@@ -56,7 +56,6 @@
             font-weight: bold;
         }
         .old-price {
-            /*text-decoration: line-through;*/
             color: #dc3545;
         }
         .description {
@@ -77,26 +76,26 @@
         }
 
         .lightbox {
-            display: none; /* Initially hidden */
-            position: fixed; /* Position relative to the viewport */
+            display: none;
+            position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0, 0, 0, 0.8); /* Semi-transparent background */
-            justify-content: center; /* Center horizontally */
-            align-items: center; /* Center vertically */
-            z-index: 1000; /* Make sure it's above other content */
+            background: rgba(0, 0, 0, 0.8);
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
         }
 
         .lightbox.active {
-            display: flex; /* Show when active */
+            display: flex;
         }
 
         .lightbox img {
-            max-width: 90%; /* Limit width to 90% of the viewport */
-            max-height: 90%; /* Limit height to 90% of the viewport */
-            border-radius: 8px; /* Optional: Add border radius */
+            max-width: 90%;
+            max-height: 90%;
+            border-radius: 8px;
         }
     </style>
 </head>
@@ -107,136 +106,10 @@
     <div class="search-container">
         <input type="text" id="search" placeholder="Tìm kiếm sản phẩm..." onkeyup="filterProducts()">
         <input type="text" id="kwpassword" placeholder="key" onkeyup="showOldPrices()">
-
     </div>
 
     <div class="product-container" id="productList">
-        <div class="product" onclick="showImage('./images/neodragonoid.jpg')">
-            <img src="./images/neodragonoid.jpg" alt="(gen1) Neo Dragonoid">
-            <h2>(gen1) Neo Dragonoid</h2>
-            <p class="old-price">Giá mua: 115</p>
-            <p class="price" hidden>Giá bán: 150.000 VNĐ</p>
-            <div class="description">Mô tả: Set xác 115k, bkg-gen1 đầu tiên</div>
-        </div>
-        <div class="product" onclick="showImage('./images/lumagrowl.jpg')">
-            <img src="./images/lumagrowl.jpg" alt="(gen1) Lumagrowl (special)">
-            <h2>(gen1) Lumagrowl (special)</h2>
-            <p class="old-price">Giá mua: <span id="real-price-lumagrowl">170</span></p>
-            <p class="price" hidden>Giá bán: 200.000 VNĐ</p>
-            <div class="description">Mô tả: Phiên bản lai haos + darkus (zin).</div>
-        </div>
-        <div class="product" onclick="showImage('./images/dharak.jpg')">
-            <img src="./images/dharak.jpg" alt="(gen1) Dharak">
-            <h2>(gen1) Dharak</h2>
-            <p class="old-price">Giá mua: 200</p>
-            <p class="price" hidden>Giá bán: 150.000 VNĐ</p>
-            <div class="description">Mô tả: Dharak nguyên bản</div>
-        </div>
-        <div class="product" onclick="showImage('./images/dharakclear_1_1.jpg')">
-            <img src="./images/dharakclear_1_1.jpg" alt="(gen1) Dharak (clear) hình 1">
-            <h2>(gen1) Dharak (clear) hình 1</h2>
-            <p class="old-price">Giá mua: 700</p>
-            <p class="price" hidden>Giá bán: 160.000 VNĐ</p>
-            <div class="description">Mô tả: 700k lận đó :|</div>
-        </div>
-        <div class="product" onclick="showImage('./images/dharakclear_1_2.jpg')">
-            <img src="./images/dharakclear_1_2.jpg" alt="(gen1) Dharak (clear) hình 2">
-            <h2>(gen1) Dharak (clear) hình 2</h2>
-            <p class="old-price">Giá mua: 0</p>
-            <p class="price" hidden>Giá bán: 160.000 VNĐ</p>
-            <div class="description">Mô tả: 700k lận đó :|</div>
-        </div>
-        <div class="product" onclick="showImage('./images/dharakcustom.jpg')">
-            <img src="./images/dharakcustom.jpg" alt="(gen1) Dharak (custom 1)">
-            <h2>(gen1) Dharak (custom 1)</h2>
-            <p class="old-price">Giá mua: 350</p>
-            <p class="price" hidden>Giá bán: 200.000 VNĐ</p>
-            <div class="description">Mô tả: Dharak tự custom màu Arcylic</div>
-        </div>
-        <div class="product" onclick="showImage('./images/dharakpaintxauvl.jpg')">
-            <img src="./images/dharakpaintxauvl.jpg" alt="(gen1) Dharak (custom 2)">
-            <h2>(gen1) Dharak (custom 2)</h2>
-            <p class="old-price">Giá mua: 100</p>
-            <p class="price" hidden>Giá bán: 190.000 VNĐ</p>
-            <div class="description">Mô tả: paint xauvl</div>
-        </div>
-        <div class="product" onclick="showImage('./images/dharakgear.jpg')">
-            <img src="./images/dharakgear.jpg" alt="(gen1) Dharak (gear)">
-            <h2>(gen1) Dharak (gear)</h2>
-            <p class="old-price">Giá mua: 500</p>
-            <p class="price" hidden>Giá bán: 250.000 VNĐ</p>
-            <div class="description">Mô tả: Dharak kèm gear, cánh bị lỏng nên bung cái tự động gập xuống, không cần bẻ xuống để gắn gear</div>
-        </div>
-        <div class="product" onclick="showImage('./images/jetkor.jpg')">
-            <img src="./images/jetkor.jpg" alt="(gen1) Jetkor (gear fake)">
-            <h2>(gen1) Jetkor (gear fake)</h2>
-            <p class="old-price">Giá mua: 90</p>
-            <p class="price" hidden>Giá bán: 250.000 VNĐ</p>
-            <div class="description">Mô tả: fake đầu tiên</div>
-        </div>
-        <div class="product" onclick="showImage('./images/serpi.jpg')">
-            <img src="./images/serpi.jpg" alt="(gen2) Serpillious (clear)">
-            <h2>(gen2) Serpillious (clear)</h2>
-            <p class="old-price">Giá mua: 630</p>
-            <p class="price" hidden>Giá bán: 250.000 VNĐ</p>
-            <div class="description">Mô tả: gen2 đầu tiên</div>
-        </div>
-        <div class="product" onclick="showImage('./images/flaredragaon.jpg')">
-            <img src="./images/flaredragaon.jpg" alt="(tech) Flare Dragaon">
-            <h2>(tech) Flare Dragaon</h2>
-            <p class="old-price">Giá mua: 200</p>
-            <p class="price" hidden>Giá bán: 250.000 VNĐ</p>
-            <div class="description">Mô tả: tech đầu tiên</div>
-        </div>
-        <div class="product" onclick="showImage('./images/saintaquos.jpg')">
-            <img src="./images/saintaquos.jpg" alt="(tech) Saint Aquos (clear)">
-            <h2>(tech) Saint Aquos (clear)</h2>
-            <p class="old-price">Giá mua: 150</p>
-            <p class="price" hidden>Giá bán: 300.000 VNĐ</p>
-            <div class="description">Mô tả: clear đầu tiên</div>
-        </div>
-        <div class="product" onclick="showImage('./images/vanfalco.jpg')">
-            <img src="./images/vanfalco.jpg" alt="(tech) Van Falco (clear)">
-            <h2>(tech) Van Falco (clear)</h2>
-            <p class="old-price">Giá mua: 150</p>
-            <p class="price" hidden>Giá bán: 150.000 VNĐ</p>
-            <div class="description">Mô tả: </div>
-        </div>
-        <div class="product" onclick="showImage('./images/kinlanleoness.jpg')">
-            <img src="./images/kinlanleoness.jpg" alt="(tech) Kinlan Leoness (clear)">
-            <h2>(tech) Kinlan Leoness (clear)</h2>
-            <p class="old-price">Giá mua: 250</p>
-            <p class="price" hidden>Giá bán: 180.000 VNĐ</p>
-            <div class="description">Mô tả: </div>
-        </div>
-        <div class="product" onclick="showImage('./images/blanshoult.jpg')">
-            <img src="./images/blanshoult.jpg" alt="(tech) Bland Shoult">
-            <h2>(tech) Bland Shoult</h2>
-            <p class="old-price">Giá mua: 150</p>
-            <p class="price" hidden>Giá bán: 200.000 VNĐ</p>
-            <div class="description">Mô tả: Thiện lương của Dio</div>
-        </div>
-        <div class="product" onclick="showImage('./images/diosivac.jpg')">
-            <img src="./images/diosivac.jpg" alt="(tech) Dio Sivac">
-            <h2>(tech) Dio Sivac</h2>
-            <p class="old-price">Giá mua: 50</p>
-            <p class="price" hidden>Giá bán: 250.000 VNĐ</p>
-            <div class="description">Mô tả: Bản ngã của Bland Shoult</div>
-        </div>
-        <div class="product" onclick="showImage('./images/jigendragaon.jpg')">
-            <img src="./images/jigendragaon.jpg" alt="(tech) Jigen Dragaon">
-            <h2>(tech) Jigen Dragaon</h2>
-            <p class="old-price">Giá mua: 850</p>
-            <p class="price" hidden>Giá bán: 250.000 VNĐ</p>
-            <div class="description">Mô tả: Trời ơi định để tiền mua Zeta mà va phải con nì 850 :| lỗi ngay cánh với tay đã fix với trầy ngọc te tua nhưng giá ổn nha mn</div>
-        </div>
-        <div class="product" onclick="showImage('./images/jibafudoduoi.jpg')">
-            <img src="./images/jibafudoduoi.jpg" alt="(tech) Jiba Fudo (tail)">
-            <h2>(tech) Jiba Fudo (tail)</h2>
-            <p class="old-price">Giá mua: 245</p>
-            <p class="price" hidden>Giá bán: 250.000 VNĐ</p>
-            <div class="description">cái đuôi mua trên sộp pi để cút tôm thành god nhưng làm biếng :|</div>
-        </div>
+        <!-- Sản phẩm sẽ được thêm từ JavaScript -->
     </div>
 
     <div class="lightbox" id="lightbox" onclick="closeImage()">
@@ -244,6 +117,180 @@
     </div>
 
     <script>
+        // Mảng chứa dữ liệu sản phẩm
+        const products = [
+            {
+                name: "(gen1) Neo Dragonoid",
+                img: "./images/neodragonoid.jpg",
+                buyPrice: 115,
+                sellPrice: 150000,
+                description: "Set xác 115k, bkg-gen1 đầu tiên"
+            },
+            {
+                name: "(gen1) Lumagrowl (special)",
+                img: "./images/lumagrowl.jpg",
+                buyPrice: 300,
+                sellPrice: 150000,
+                description: "Phiên bản lai haos + darkus (zin)."
+            },
+            {
+                name: "(gen1) Dharak",
+                img: "./images/dharak.jpg",
+                buyPrice: 200,
+                sellPrice: 150000,
+                description: "Dharak nguyên bản"
+            },
+            {
+                name: "(gen1) Dharak (clear) hình 1",
+                img: "./images/dharakclear_1_1.jpg",
+                buyPrice: 700,
+                sellPrice: 160000,
+                description: "700k lận đó :|"
+            },
+            {
+                name: "(gen1) Dharak (clear) hình 2",
+                img: "./images/dharakclear_1_2.jpg",
+                buyPrice: 0,
+                sellPrice: 160000,
+                description: "700k lận đó :|"
+            },
+            {
+                name: "(gen1) Dharak (custom 1)",
+                img: "./images/dharakcustom.jpg",
+                buyPrice: 350,
+                sellPrice: 200000,
+                description: "Dharak tự custom màu Arcylic"
+            },
+            {
+                name: "(gen1) Dharak (custom 2)",
+                img: "./images/dharakpaintxauvl.jpg",
+                buyPrice: 100,
+                sellPrice: 190000,
+                description: "paint xauvl"
+            },
+            {
+                name: "(gen1) Dharak (gear)",
+                img: "./images/dharakgear.jpg",
+                buyPrice: 500,
+                sellPrice: 250000,
+                description: "Dharak kèm gear, cánh bị lỏng nên bung cái tự động gập xuống, không cần bẻ xuống để gắn gear"
+            },
+            {
+                name: "(gen1) Dharak Darkus-Ventus",
+                img: "./images/dharakdarkusventus.jpg",
+                buyPrice: 220,
+                sellPrice: 250000,
+                description: "Dharak màu darkus hệ ventus (zin), gờ ngay đuôi không có nên luôn trong trạng thái gập xuống"
+            },
+            {
+                name: "(gen1) Dharak Haos",
+                img: "./images/dharakhaos.jpg",
+                buyPrice: 150,
+                sellPrice: 250000,
+                description: "Đuôi không có lò xo phần cuối đuôi nên không tự bật được, 2 cánh khi bung tự động bật xuống"
+            },
+            {
+                name: "(gen1) Dharak Pyrus",
+                img: "./images/dharakpyrus.jpg",
+                buyPrice: 200,
+                sellPrice: 250000,
+                description: "lâu lâu khi bung cánh tự bật xuống"
+            },
+            {
+                name: "(gen1) Jetkor (gear fake)",
+                img: "./images/jetkor.jpg",
+                buyPrice: 90,
+                sellPrice: 250000,
+                description: "fake đầu tiên"
+            },
+            {
+                name: "(gen2) Serpillious (clear)",
+                img: "./images/serpi.jpg",
+                buyPrice: 630,
+                sellPrice: 250000,
+                description: "gen2 đầu tiên"
+            },
+            {
+                name: "(tech) Flare Dragaon",
+                img: "./images/flaredragaon.jpg",
+                buyPrice: 200,
+                sellPrice: 250000,
+                description: "tech đầu tiên"
+            },
+            {
+                name: "(tech) Saint Aquos (clear)",
+                img: "./images/saintaquos.jpg",
+                buyPrice: 150,
+                sellPrice: 300000,
+                description: "clear đầu tiên"
+            },
+            {
+                name: "(tech) Van Falco (clear)",
+                img: "./images/vanfalco.jpg",
+                buyPrice: 150,
+                sellPrice: 150000,
+                description: ""
+            },
+            {
+                name: "(tech) Kinlan Leoness (clear)",
+                img: "./images/kinlanleoness.jpg",
+                buyPrice: 250,
+                sellPrice: 180000,
+                description: ""
+            },
+            {
+                name: "(tech) Bland Shoult",
+                img: "./images/blanshoult.jpg",
+                buyPrice: 150,
+                sellPrice: 200000,
+                description: "Thiện lương của Dio"
+            },
+            {
+                name: "(tech) Dio Sivac",
+                img: "./images/diosivac.jpg",
+                buyPrice: 50,
+                sellPrice: 250000,
+                description: "Bản ngã của Bland Shoult"
+            },
+            {
+                name: "(tech) Jigen Dragaon",
+                img: "./images/jigendragaon.jpg",
+                buyPrice: 850,
+                sellPrice: 250000,
+                description: "Trời ơi định để tiền mua Zeta mà va phải con nì 850 :| lỗi ngay cánh với tay đã fix với trầy ngọc te tua nhưng giá ổn nha mn"
+            },
+            {
+                name: "(tech) Jiba Fudo (tail)",
+                img: "./images/jibafudoduoi.jpg",
+                buyPrice: 245,
+                sellPrice: 250000,
+                description: "cái đuôi mua trên sộp pi để cút tôm thành god nhưng làm biếng :|"
+            }
+        ];
+
+        // Hàm render sản phẩm từ mảng
+        function renderProducts() {
+            const productList = document.getElementById('productList');
+            productList.innerHTML = ''; // Xóa danh sách hiện tại (nếu có)
+            
+            products.forEach(product => {
+                const productHTML = `
+                    <div class="product" onclick="showImage('${product.img}')">
+                        <img src="${product.img}" alt="${product.name}">
+                        <h2>${product.name}</h2>
+                        <p class="old-price">Giá mua: ${product.buyPrice}</p>
+                        <p class="price" hidden>Giá bán: ${product.sellPrice.toLocaleString()} VNĐ</p>
+                        <div class="description">Mô tả: ${product.description}</div>
+                    </div>
+                `;
+                productList.insertAdjacentHTML('beforeend', productHTML);
+            });
+        }
+
+        // Gọi hàm render khi trang được tải
+        renderProducts();
+
+        // Hàm lọc sản phẩm theo tìm kiếm
         function filterProducts() {
             const searchInput = document.getElementById('search').value.toLowerCase();
             const products = document.querySelectorAll('.product');
@@ -258,6 +305,7 @@
             });
         }
 
+        // Hiển thị ảnh trong lightbox
         function showImage(src) {
             const lightbox = document.getElementById('lightbox');
             const lightboxImage = document.getElementById('lightboxImage');
@@ -265,19 +313,20 @@
             lightbox.classList.add('active');
         }
 
+        // Đóng lightbox
         function closeImage() {
             const lightbox = document.getElementById('lightbox');
             lightbox.classList.remove('active');
         }
 
-        document.getElementById("real-price-lumagrowl").innerHTML = 170 + 130;
-
+        // Ẩn giá mua ban đầu
         const oldPrices = document.getElementsByClassName("old-price");
 
         Array.from(oldPrices).forEach(function(oldPrice) {
             oldPrice.hidden = true;
         });
 
+        // Hiển thị giá mua khi nhập đúng mật khẩu
         function showOldPrices() {
             const kwInput = document.getElementById('kwpassword').value;
             Array.from(oldPrices).forEach(function(oldPrice) {
