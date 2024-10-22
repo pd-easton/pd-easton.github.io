@@ -194,7 +194,21 @@
                 img: "./images/dharakpyrus.jpg",
                 buyPrice: 200,
                 sellPrice: 250000,
-                description: "lâu lâu khi bung cánh tự bật xuống"
+                description: "ổn, 1 bên cánh khi bụng tự động bật xuống"
+            },
+            {
+                name: "(gen1) Dharak Subterra",
+                img: "./images/dharaksubterra.jpg",
+                buyPrice: 150,
+                sellPrice: 250000,
+                description: "ổn, đẹp"
+            },
+            {
+                name: "(gen1) Dharak Ventus",
+                img: "./images/dharakventus.jpg",
+                buyPrice: 150,
+                sellPrice: 250000,
+                description: "ổn, trầy hệ nhẹ"
             },
             {
                 name: "(gen1) Jetkor (gear fake)",
@@ -272,7 +286,7 @@
         function renderProducts() {
             const productList = document.getElementById('productList');
             productList.innerHTML = ''; // Xóa danh sách hiện tại (nếu có)
-            
+            var totalPrice = 0;
             products.forEach(product => {
                 const productHTML = `
                     <div class="product" onclick="showImage('${product.img}')">
@@ -284,7 +298,11 @@
                     </div>
                 `;
                 productList.insertAdjacentHTML('beforeend', productHTML);
+
+                totalPrice = totalPrice + product.buyPrice;
             });
+
+            console.log("Total: " + totalPrice);
         }
 
         // Gọi hàm render khi trang được tải
