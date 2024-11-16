@@ -51,11 +51,11 @@
         .product:hover {
             transform: scale(1.05);
         }
-        .price {
+        .price, .sold-price {
             color: #28a745;
             font-weight: bold;
         }
-        .old-price {
+        .old-price, .sold-old-price {
             color: #dc3545;
         }
         .description {
@@ -112,6 +112,14 @@
         <!-- Sản phẩm sẽ được thêm từ JavaScript -->
     </div>
 
+    Đã bán
+    <div class="product-container" id="soldProductList">
+        
+    </div>
+
+    Note "Lỗ":
+        <ul id="notelo"></ul>
+
     <div class="lightbox" id="lightbox" onclick="closeImage()">
         <img id="lightboxImage" src="" alt="">
     </div>
@@ -133,15 +141,6 @@
                 sellPrice: 300,
                 description: "Phiên bản lai haos + darkus (zin)."
             },
-            /* SOLD
-            {
-                name: "(gen1) Abis Omega Ventus (clear)",
-                img: "./images/abisomegaventusclear.jpg",
-                buyPrice: 180,
-                sellPrice: 110,
-                description: "Rắn lục clear."
-            },
-            */
             {
                 name: "(gen1) Dharak",
                 img: "./images/dharak.jpg",
@@ -367,6 +366,18 @@
             }
         ];
 
+        const soldproducts = [
+            {
+                soldname: "(gen1) Abis Omega Ventus (clear)",
+                soldimg: "./images/abisomegaventusclear.jpg",
+                soldbuyPrice: 180,
+                soldsellPrice: 110,
+                solddifference: 70,
+                solddescription: "Rắn lục clear.",
+                soldnote: 'Abis clear mua 180 bán 110 (120 nhưng bao 10k ship): lỗ 70'
+            },
+        ]
+
         // Hàm render sản phẩm từ mảng
         function renderProducts() {
             const productList = document.getElementById('productList');
@@ -377,8 +388,8 @@
                     <div class="product" onclick="showImage('${product.img}')">
                         <img src="${product.img}" alt="${product.name}">
                         <h2>${product.name}</h2>
-                        <p class="old-price">Giá mua: ${product.buyPrice}</p>
-                        <p class="price" hidden>Giá bán: ${product.sellPrice.toLocaleString()} VNĐ</p>
+                        <p class="old-price">Giá mua: ${product.buyPrice}.000 VNĐ</p>
+                        <p class="price" hidden>Giá bán: ${product.sellPrice.toLocaleString()}.000 VNĐ</p>
                         <div class="description">Mô tả: ${product.description}</div>
                     </div>
                 `;
@@ -388,12 +399,43 @@
             });
 
             console.log("Total: " + totalPrice);
-            console.log('note "Lỗ":');
-            console.log('Abis clear mua 180 bán 110 (120 nhưng bao 10k ship): lỗ 70');
         }
 
         // Gọi hàm render khi trang được tải
         renderProducts();
+
+        function renderSoldProducts() {
+            const productList = document.getElementById('soldProductList');
+            productList.innerHTML = ''; // Xóa danh sách hiện tại (nếu có)
+            const notes = document.getElementById("notelo");
+            notes.innerHTML = '';
+            soldproducts.forEach(product => {
+                var diffPrice = 0;
+                diffPrice = product.soldsellPrice - product.soldbuyPrice;
+
+                const productHTML = `
+                    <div class="product" onclick="showImage('${product.soldimg}')">
+                        <img src="${product.soldimg}" alt="${product.soldname}">
+                        <h2>${product.soldname}</h2>
+                        <p class="sold-old-price">Giá mua: ${product.soldbuyPrice.toLocaleString()}.000 VNĐ</p>
+                        <p class="sold-price">Giá bán: ${product.soldsellPrice.toLocaleString()}.000 VNĐ</p>
+                        <p class="diff-price">Chênh lệch: ${diffPrice}.000 VNĐ</p>
+                        <div class="description">Mô tả: ${product.solddescription}</div>
+                    </div>
+                `;
+                productList.insertAdjacentHTML('beforeend', productHTML);
+                
+                const noteHTML = `
+                    <li>
+                        <h5>${product.soldnote}</h5>
+                    </li>
+                `;
+
+                notes.insertAdjacentHTML('beforeend', noteHTML);
+            });
+        }
+
+        renderSoldProducts();
 
         // Hàm lọc sản phẩm theo tìm kiếm
         function filterProducts() {
