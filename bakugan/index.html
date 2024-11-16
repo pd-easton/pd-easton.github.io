@@ -124,7 +124,7 @@
                 img: "./images/neodragonoid.jpg",
                 buyPrice: 115,
                 sellPrice: 115,
-                description: "Set xác 115k, bkg-gen1 đầu tiên"
+                description: "Set xác 115k, bkg-gen1 đầu tiên",
             },
             {
                 name: "(gen1) Lumagrowl (special)",
@@ -133,13 +133,15 @@
                 sellPrice: 300,
                 description: "Phiên bản lai haos + darkus (zin)."
             },
+            /* SOLD
             {
                 name: "(gen1) Abis Omega Ventus (clear)",
                 img: "./images/abisomegaventusclear.jpg",
                 buyPrice: 180,
-                sellPrice: 180,
+                sellPrice: 110,
                 description: "Rắn lục clear."
             },
+            */
             {
                 name: "(gen1) Dharak",
                 img: "./images/dharak.jpg",
@@ -154,21 +156,6 @@
                 sellPrice: 700,
                 description: "700k lận đó :|"
             },
-            /*
-            {
-                name: "(gen1) Dharak (clear) hình 1",
-                img: "./images/dharakclear_1_1.jpg",
-                buyPrice: 700,
-                sellPrice: 700,
-                description: "700k lận đó :|"
-            },
-            {
-                name: "(gen1) Dharak (clear) hình 2",
-                img: "./images/dharakclear_1_2.jpg",
-                buyPrice: 0,
-                sellPrice: 0,
-                description: "700k lận đó :|"
-            },*/
             {
                 name: "(gen1) Dharak (custom 1)",
                 img: "./images/dharakcustom.jpg",
@@ -370,6 +357,13 @@
                 buyPrice: 245,
                 sellPrice: 245,
                 description: "cái đuôi mua trên sộp pi để cút tôm thành god nhưng làm biếng :|"
+            },
+            {
+                name: "Tiền lỗ (ship, tiền lỗ khi bán hàng,v.v...)",
+                img: "./comingsoon.avif",
+                buyPrice: 70,
+                sellPrice: 0,
+                description: "Tiền này bao gồm tiền ship, tiền chênh lệch (lỗ) giữa khi mua và khi bán baku, ừ thì là dị đó :)), tiền ship thì lâu lâu mới tính"
             }
         ];
 
@@ -394,6 +388,8 @@
             });
 
             console.log("Total: " + totalPrice);
+            console.log('note "Lỗ":');
+            console.log('Abis clear mua 180 bán 110 (120 nhưng bao 10k ship): lỗ 70');
         }
 
         // Gọi hàm render khi trang được tải
