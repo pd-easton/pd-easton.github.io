@@ -128,18 +128,25 @@
         // Mảng chứa dữ liệu sản phẩm
         const products = [
             {
-                name: "(gen1) Neo Dragonoid",
+                name: "(gen1) Pyrus Neo Dragonoid",
                 img: "./images/neodragonoid.jpg",
                 buyPrice: 115,
                 sellPrice: 115,
                 description: "Set xác 115k, bkg-gen1 đầu tiên",
             },
             {
-                name: "(gen1) Lumagrowl (special)",
+                name: "(gen1) Darkus Lumagrowl (special)",
                 img: "./images/lumagrowl.jpg",
                 buyPrice: 300,
                 sellPrice: 300,
                 description: "Phiên bản lai haos + darkus (zin)."
+            },
+            {
+                name: "(gen1) Pyrus Jaakor",
+                img: "./images/jaakorpyrus.jpg",
+                buyPrice: 120,
+                sellPrice: 120,
+                description: "Bakugan ss4, lăn lăn nhảy nhảy đi lụm tùm lum"
             },
             {
                 name: "(gen1) Darkus Dharak",
@@ -268,13 +275,6 @@
                 description: "fake đầu tiên, đã tự sơn xấu tùm lum tè le :))"
             },
             {
-                name: "(gen1) Pyrus Jaakor",
-                img: "./images/jaakorpyrus.jpg",
-                buyPrice: 120,
-                sellPrice: 120,
-                description: "Bakugan ss4, lăn lăn nhảy nhảy đi lụm tùm lum"
-            },
-            {
                 name: "(gen2) Serpillious (clear)",
                 img: "./images/serpi.jpg",
                 buyPrice: 630,
@@ -331,7 +331,7 @@
                 description: ""
             },
             {
-                name: "(tech) Bland Shoult",
+                name: "(tech) Blan Shoult",
                 img: "./images/blanshoult.jpg",
                 buyPrice: 150,
                 sellPrice: 150,
@@ -349,21 +349,21 @@
                 img: "./images/jigendragaon.jpg",
                 buyPrice: 850,
                 sellPrice: 850,
-                description: "Trời ơi định để tiền mua Zeta mà va phải con nì 850 :| lỗi ngay cánh với tay đã fix với trầy ngọc te tua nhưng giá ổn nha mn"
+                description: "Trời ơi định để tiền mua Zeta mà va phải con nì 850 :| trước bị hư ngay tay, nay đã thay cái đầu mới nên hết lỗi, đầu cũ đem đi sơn god rùi"
             },
             {
                 name: "(tech) Jigen Dragaon (custom Friendship)",
                 img: "./images/jigendragaonfriendship.jpg",
                 buyPrice: 847,
                 sellPrice: 847,
-                description: "Bid Thái Lan, được sơn từ Jigen Dragaon thường bởi thợ sơn Thái Lan, hệ bị xoay nghiên không như mẫu và không có chữ tàu bên cánh. Bị gãy chốt 1 bên cánh, bị dính keo không thể tách ra làm đôi, nói chung là xứng đáng để được đem đi paint :))"
+                description: "Bid Thái Lan, được sơn từ Jigen Dragaon thường bởi thợ sơn Thái Lan, hệ bị xoay nghiên không như mẫu và không có chữ tàu bên cánh. Bị gãy chốt 2 bên cánh nên đã 502 lại, không thể chuyển dạng phần đuôi, bị dính keo không thể tách ra làm đôi, nói chung là xứng đáng để được đem đi paint :))"
             },
             {
                 name: "(tech) Jigen Dragaon (custom God Three)",
                 img: "./images/jibafudoduoi.jpg",
                 buyPrice: 675,
                 sellPrice: 675,
-                description: "Tạm tính: 675 (245 đuôi Jiba, 430 đầu Jigen)"
+                description: "Tạm tính: 675 (245 đuôi Jiba, 430 đầu Jigen), Jigen lỗi ngay tay với tay đã fix nên đem đi sơn"
             },
             {
                 name: "(tech) Go Dragaon",
@@ -378,12 +378,13 @@
                 buyPrice: 800,
                 sellPrice: 800,
                 description: "Con cá xanh xanh có cái đuôi cam cam, mua 1 lần 1m6 chung với Gaga Horus"
-            },{
-                name: "(tech) Gaga Horus",
+            },
+            {
+                name: "(tech) Gaga Horus (Bay mất tiêu hệ rùi 😭)",
                 img: "./images/gagahorus.jpg",
                 buyPrice: 800,
                 sellPrice: 800,
-                description: "Con chim cam cam có cái đuôi xanh xanh, mua 1 lần 1m6 chung với Go Garyu"
+                description: "Con chim cam cam có cái đuôi xanh xanh, mua 1 lần 1m6 chung với Go Garyu. Huhu không để ý cầm vô hệ nhiều quá bay mất tiêu rùi"
             },
             /*
             {
@@ -394,10 +395,74 @@
                 description: "cái đuôi mua trên sộp pi để cút tôm thành god nhưng làm biếng :|"
             },
             */
+            
+            {
+                name: "Dharak (card)",
+                img: "./images/cardDharak30.JPG",
+                buyPrice: 30,
+                sellPrice: 30,
+                description: "Card Dharak"
+            },
+            {
+                name: "Flare Dragaon (card)",
+                img: "./images/cardDragaon40.JPG",
+                buyPrice: 40,
+                sellPrice: 40,
+                description: "Card Flare Dragaon"
+            },
+            {
+                name: "Blan Shoult (card)",
+                img: "./images/cardBlan50.JPG",
+                buyPrice: 50,
+                sellPrice: 50,
+                description: "Card Blan Shoult"
+            },
+            {
+                name: "Saint X Leoness X Falco (card)",
+                img: "./images/cardSaintLeonessFalco50.JPG",
+                buyPrice: 50,
+                sellPrice: 50,
+                description: "Card Saint Aquos X Kinlan Leoness X Van Falco"
+            },
+            {
+                name: "Jigen Dragaon (custom print card)",
+                img: "./images/cardDragaonPrint50.JPG",
+                buyPrice: 50,
+                sellPrice: 50,
+                description: "Card Jigen Dragaon"
+            },
+            {
+                name: "Zeta Munikis (custom print card)",
+                img: "./images/cardZetaPrint50.JPG",
+                buyPrice: 50,
+                sellPrice: 50,
+                description: "Card Zeta Munikis"
+            },
+            {
+                name: "Jigen Dragaon X Zeta Munikis (custom print card)",
+                img: "./images/cardDragaonZetaPrint50.JPG",
+                buyPrice: 50,
+                sellPrice: 50,
+                description: "Card Jigen Dragaon x Zeta Munikis"
+            },
+            {
+                name: "Hộp 15 ô A81 (2 cái)",
+                img: "./images/Hop30.JPG",
+                buyPrice: 60,
+                sellPrice: 60,
+                description: "Hộp đựng 15 ô A81"
+            },
+            {
+                name: "Hộp trong suốt",
+                img: "./images/Hop75.JPG",
+                buyPrice: 75,
+                sellPrice: 75,
+                description: "Hộp trong suốt trưng được khoảng 6 on tech b3"
+            },
             {
                 name: "Tiền lỗ (ship, tiền lỗ khi bán hàng,v.v...)",
                 img: "./comingsoon.avif",
-                buyPrice: 520,
+                buyPrice: 545,
                 sellPrice: 0,
                 description: "Tiền này bao gồm tiền ship, tiền chênh lệch (lỗ) giữa khi mua và khi bán baku, ừ thì là dị đó :)), tiền ship thì lâu lâu mới tính"
             }
