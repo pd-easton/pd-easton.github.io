@@ -174,7 +174,7 @@
     </div>
 
     <div class="fixed-summary">
-        <h3 id="showSelectedPrice" hidden><span id="totalPrice">0</span>.000 VNĐ</h3>
+        <h3 id="showSelectedPrice" hidden><span id="totalPrice">0</span>000 VNĐ</h3>
         <button id="selectAll" onclick="SelectAll()">Select All</button>
         <button id="clearAll" onclick="clearSelections()">Clear All</button>
     </div>
@@ -701,8 +701,8 @@
                         <input type="checkbox" class="checkboxProduct" id="product${index}" onchange="calculateTotal()">
                         <img src="${product.img}" alt="${product.name}" onclick="showImage('${product.img}')">
                         <h2>${product.name}</h2>
-                        <p class="old-price">Giá mua: ${product.buyPrice}.000 VNĐ</p>
-                        <p class="price" hidden>Giá bán: ${product.sellPrice.toLocaleString()}.000 VNĐ</p>
+                        <p class="old-price">Giá mua: ${product.buyPrice}000 VNĐ</p>
+                        <p class="price" hidden>Giá bán: ${product.sellPrice.toLocaleString()}000 VNĐ</p>
                         <div class="description">Mô tả: ${product.description}</div>
                     </div>
                 `;
@@ -726,7 +726,7 @@
                 }
             });
             document.getElementById('totalPrice').innerText = total;
-            //console.log("Tổng tiền: " + total + ".000 VNĐ");
+            //console.log("Tổng tiền: " + total + "000 VNĐ");
         }
 
         function renderSoldProducts() {
@@ -742,9 +742,9 @@
                     <div class="product" onclick="showImage('${product.soldimg}')">
                         <img src="${product.soldimg}" alt="${product.soldname}">
                         <h2>${product.soldname}</h2>
-                        <p class="sold-old-price">Giá mua: ${product.soldbuyPrice.toLocaleString()}.000 VNĐ</p>
-                        <p class="sold-price">Giá bán: ${product.soldsellPrice.toLocaleString()}.000 VNĐ</p>
-                        <p class="diff-price">Chênh lệch: ${diffPrice}.000 VNĐ</p>
+                        <p class="sold-old-price">Giá mua: ${product.soldbuyPrice.toLocaleString()}000 VNĐ</p>
+                        <p class="sold-price">Giá bán: ${product.soldsellPrice.toLocaleString()}000 VNĐ</p>
+                        <p class="diff-price">Chênh lệch: ${diffPrice}000 VNĐ</p>
                         <div class="description">Mô tả: ${product.solddescription}</div>
                     </div>
                 `;
