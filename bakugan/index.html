@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Danh Sách Sản Phẩm</title>
+    <title>Danh Sách Bakugan</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -153,7 +153,7 @@
     <h1>Danh sách Bakugan sở hữu</h1>
     
     <div class="search-container">
-        <input type="text" id="search" placeholder="Tìm kiếm sản phẩm..." onkeyup="filterProducts()">
+        <input type="text" id="search" placeholder="Tìm kiếm bakugan/bakutech/trap/gear..." onkeyup="filterProducts()">
         <input type="text" id="kwpassword" placeholder="key" onkeyup="showOldPrices()">
     </div>
 
@@ -215,7 +215,7 @@
                 img: "./images/dharakclear.png",
                 buyPrice: 700,
                 sellPrice: 700,
-                description: "[gundalian-invaders] 700k lận đó :|"
+                description: "[gundalian-invaders] 700k lận đó :|, lỗi tui nên đuôi bị: gãy, đã keo, không tự bung được phải bung bằng tay, dễ gãy lại :(("
             },
             {
                 name: "(gen1) Darkus Dharak (Translucent)",
@@ -376,7 +376,7 @@
                 img: "./images/razenoid.jpg",
                 buyPrice: 650,
                 sellPrice: 650,
-                description: "[mechtanium-surge] Dharak SS4 (?). Chân kim loại, khó bung. Cánh tay phải hơi lỏng, nhìn trực diện tổng thể thì hơi bị nghiêng sang bên trái"
+                description: "[mechtanium-surge] Dharak SS4 (?). Chân kim loại, khó bung. Cánh tay phải hơi lỏng, nhìn trực diện tổng thể thì hơi bị nghiêng sang bên trái. Đã được tô chi tiết sương sương :))"
             },
             {
                 name: "(gen2) Aquos Howlkor Ultra (AA)",
@@ -519,20 +519,6 @@
                 description: "[bakutech] clear đầu tiên"
             },
             {
-                name: "(tech) Ventus Van Falco (clear)",
-                img: "./images/vanfalco.jpg",
-                buyPrice: 150,
-                sellPrice: 150,
-                description: "[bakutech]"
-            },
-            {
-                name: "(tech) Haos Kilan Leoness (clear)",
-                img: "./images/kinlanleoness.jpg",
-                buyPrice: 250,
-                sellPrice: 250,
-                description: "[bakutech]"
-            },
-            {
                 name: "(tech) Haos Blan Shoult",
                 img: "./images/blanshoult.jpg",
                 buyPrice: 150,
@@ -653,13 +639,6 @@
                 description: "Card Blan Shoult"
             },
             {
-                name: "Saint X Leoness X Falco (card)",
-                img: "./images/cardSaintLeonessFalco50.JPG",
-                buyPrice: 50,
-                sellPrice: 50,
-                description: "Card Saint Aquos X Kinlan Leoness X Van Falco"
-            },
-            {
                 name: "Jigen Dragaon (custom print card)",
                 img: "./images/cardDragaonPrint50.JPG",
                 buyPrice: 50,
@@ -771,6 +750,30 @@
                 solddescription: "bán chung JetKor gear fake",
                 soldnote: 'như trên'
             },
+            {
+                soldname: "(tech) Ventus Van Falco (clear)",
+                soldimg: "./images/vanfalco.jpg",
+                soldbuyPrice: 150,
+                soldsellPrice: 200,
+                solddescription: "[bakutech]",
+                soldnote: "falco"
+            },
+            {
+                soldname: "(tech) Haos Kilan Leoness (clear)",
+                soldimg: "./images/kinlanleoness.jpg",
+                soldbuyPrice: 250,
+                soldsellPrice: 200,
+                solddescription: "[bakutech]",
+                soldnote: "leoness"
+            },
+            {
+                soldname: "Saint X Leoness X Falco (card)",
+                soldimg: "./images/cardSaintLeonessFalco50.JPG",
+                soldbuyPrice: 50,
+                soldsellPrice: 0,
+                solddescription: "Card Saint Aquos X Kinlan Leoness X Van Falco",
+                soldnote: "3 tech card"
+            },
         ]
 
         // Hàm render sản phẩm từ mảng
@@ -877,18 +880,50 @@
         // Ẩn giá mua ban đầu
         const oldPrices = document.getElementsByClassName("old-price");
 
+        const soldoldPrices = document.getElementsByClassName("sold-old-price");
+        const soldPrices = document.getElementsByClassName("sold-price");
+        const solddiffPrices = document.getElementsByClassName("diff-price");
         Array.from(oldPrices).forEach(function(oldPrice) {
             oldPrice.hidden = true;
         });
 
+        Array.from(soldoldPrices).forEach(function(oldPrice) {
+            oldPrice.hidden = true;
+        });
+        Array.from(soldPrices).forEach(function(oldPrice) {
+            oldPrice.hidden = true;
+        });      
+        Array.from(solddiffPrices).forEach(function(oldPrice) {
+            oldPrice.hidden = true;
+        });
         // Hiển thị giá mua khi nhập đúng mật khẩu
         function showOldPrices() {
             const kwInput = document.getElementById('kwpassword').value;
             Array.from(oldPrices).forEach(function(oldPrice) {
                 oldPrice.hidden = true;
             });
+
+            Array.from(soldoldPrices).forEach(function(oldPrice) {
+                oldPrice.hidden = true;
+            });
+            Array.from(soldPrices).forEach(function(oldPrice) {
+                oldPrice.hidden = true;
+            });      
+            Array.from(solddiffPrices).forEach(function(oldPrice) {
+                oldPrice.hidden = true;
+            });
             if (kwInput == "pd-easton") {
                 Array.from(oldPrices).forEach(function(oldPrice) {
+                    oldPrice.hidden = false;
+                });
+
+                Array.from(soldoldPrices).forEach(function(oldPrice) {
+                    oldPrice.hidden = false;
+                });
+                Array.from(soldPrices).forEach(function(oldPrice) {
+                    oldPrice.hidden = false;
+                });      
+                Array.from(solddiffPrices).forEach(function(oldPrice) {
                     oldPrice.hidden = false;
                 });
                 document.getElementById("showSelectedPrice").hidden = false;
