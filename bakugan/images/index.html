@@ -1,0 +1,996 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Danh Sách Bakugan</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f8f9fa;
+            margin: 0;
+            padding: 20px;
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+        .search-container {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .search-container input {
+            padding: 10px;
+            width: 300px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        .product-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        .product {
+            background: white;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            margin: 10px;
+            padding: 15px;
+            width: 200px;
+            text-align: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: relative;
+            overflow: hidden;
+            transition: transform 0.2s;
+        }
+        .product img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 5px;
+        }
+        .product:hover {
+            transform: scale(1.05);
+        }
+        .price, .sold-price {
+            color: #28a745;
+            font-weight: bold;
+        }
+        .old-price, .sold-old-price {
+            color: #dc3545;
+        }
+        /*
+        .description {
+            display: none;
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(255, 255, 255, 0.9);
+            padding: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+            text-align: left;
+            border-radius: 8px;
+        }
+        
+        .product:hover .description {
+            display: block;
+        }
+        */
+        .lightbox {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .lightbox.active {
+            display: flex;
+        }
+
+        .lightbox img {
+            max-width: 90%;
+            max-height: 90%;
+            border-radius: 8px;
+        }
+
+        .fixed-summary {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: #fff;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            padding: 15px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            z-index: 1000;
+            width: 200px;
+            text-align: center;
+        }
+        .fixed-summary button {
+            margin-top: 10px;
+            padding: 5px 10px;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+        .fixed-summary button#clearAll {
+            background: #dc3545;
+        }
+        .fixed-summary button#clearAll:hover {
+            background: #c82333;
+        }
+
+        .fixed-summary button#selectAll {
+            background: #35dc6d;
+        }
+        .fixed-summary button#selectAll:hover {
+            background: #2ec823;
+        }
+
+        .checkboxProduct {
+            width: 20px;
+            height: 20px;
+            accent-color: #28a745;
+            cursor: pointer;
+        }
+
+        label {
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Danh sách Bakugan sở hữu</h1>
+    
+    <div class="search-container">
+        <input type="text" id="search" placeholder="Tìm kiếm bakugan/bakutech/trap/gear..." onkeyup="filterProducts()">
+        <input type="text" id="kwpassword" placeholder="key" onkeyup="showOldPrices()">
+    </div>
+
+    <div class="product-container" id="productList">
+        <!-- Sản phẩm sẽ được thêm từ JavaScript -->
+    </div>
+
+    Đã bán
+    <div class="product-container" id="soldProductList">
+        
+    </div>
+
+    Note "Lỗ":
+        <ul id="notelo"></ul>
+
+    <div class="lightbox" id="lightbox" onclick="closeImage()">
+        <img id="lightboxImage" src="" alt="">
+    </div>
+
+    <div class="fixed-summary">
+        <h3 id="showSelectedPrice" hidden><span id="totalPrice">0</span>000 VNĐ</h3>
+        <button id="selectAll" onclick="SelectAll()">Select All</button>
+        <button id="clearAll" onclick="clearSelections()">Clear All</button>
+    </div>
+
+    <script>
+        // Mảng chứa dữ liệu sản phẩm
+        const products = [
+            {
+                name: "(gen1) Pyrus Neo Dragonoid",
+                img: "./images/neodragonoid.jpg",
+                buyPrice: 115,
+                sellPrice: 115,
+                description: "[new-vestroia] Set xác 115k, bkg-gen1 đầu tiên",
+            },
+            {
+                name: "(gen1) Darkus Lumagrowl (special)",
+                img: "./images/lumagrowl.jpg",
+                buyPrice: 300,
+                sellPrice: 300,
+                description: "[gundalian-invaders] Phiên bản lai haos + darkus (zin)."
+            },
+            {
+                name: "(gen1) Pyrus Jaakor (Camo Surge)",
+                img: "./images/jaakorpyrus.jpg",
+                buyPrice: 120,
+                sellPrice: 120,
+                description: "[mechtanium-surge] Bakugan ss4, lăn lăn nhảy nhảy đi lụm tùm lum"
+            },
+            {
+                name: "(gen1) Darkus Dharak",
+                img: "./images/dharak.jpg",
+                buyPrice: 300,
+                sellPrice: 300,
+                description: "[gundalian-invaders] Dharak nguyên bản"
+            },
+                        {
+                name: "(gen1) Clear Dharak",
+                img: "./images/dharakclearrealdna.jpg",
+                buyPrice: 900,
+                sellPrice: 900,
+                description: "[gundalian-invaders] Hàng TL còn DNA, còn code, nhưng hơi ố không clear bằng con kia"
+            },
+            {
+                name: "(gen1) Clear Dharak",
+                img: "./images/dharakclearreal.jpg",
+                buyPrice: 1500,
+                sellPrice: 1500,
+                description: "[gundalian-invaders] Mua hơi lầm ở TL :|, không có DNA, còn code, nhưng được cái clear hơn con còn lại"
+            },
+            {
+                name: "(gen1) Darkus Dharak (Translucent) (clear custom)",
+                img: "./images/dharakclear.png",
+                buyPrice: 700,
+                sellPrice: 700,
+                description: "[gundalian-invaders] 700k lận đó :|, lỗi tui nên đuôi bị: gãy, đã keo, không tự bung được phải bung bằng tay, dễ gãy lại :(("
+            },
+            {
+                name: "(gen1) Darkus Dharak (Translucent)",
+                img: "./images/dharakcleardarkus.jpg",
+                buyPrice: 800,
+                sellPrice: 800,
+                description: "[gundalian-invaders] Dharak Translucent zin chưa sơn"
+            },
+            {
+                name: "(gen1) Darkus Dharak (custom 1)",
+                img: "./images/dharakcustom.jpg",
+                buyPrice: 250,
+                sellPrice: 250,
+                description: "[gundalian-invaders] Dharak tự custom màu Arcylic"
+            },
+            {
+                name: "(gen1) Darkus Dharak (custom 2)",
+                img: "./images/dharakpaintxauvl.jpg",
+                buyPrice: 100,
+                sellPrice: 100,
+                description: "[gundalian-invaders] paint xauvl, đã \"bị trộm\" đuôi bởi Dharak Colossus"
+            },
+            {
+                name: "(gen1) Darkus Dharak cánh lỏng",
+                img: "./images/dharakgear.jpg",
+                buyPrice: 150,
+                sellPrice: 150,
+                description: "[gundalian-invaders] Dharak cánh bị lỏng nên bung cái tự động gập xuống, không cần bẻ xuống để gắn gear"
+            },
+            {
+                name: "(gen1) Darkus-Ventus Dharak",
+                img: "./images/dharakdarkusventus.jpg",
+                buyPrice: 220,
+                sellPrice: 220,
+                description: "[gundalian-invaders] Dharak màu darkus hệ ventus (zin), gờ ngay đuôi không có nên luôn trong trạng thái gập xuống"
+            },
+            {
+                name: "(gen1) Haos Dharak",
+                img: "./images/dharakhaos2.jpg",
+                buyPrice: 200,
+                sellPrice: 200,
+                description: "[gundalian-invaders] Haos Dharak 2 cánh còn nguyên không lỏng"
+            },
+            {
+                name: "(gen1) Haos Dharak cánh lỏng",
+                img: "./images/dharakhaos.jpg",
+                buyPrice: 150,
+                sellPrice: 150,
+                description: "[gundalian-invaders] Đuôi không có lò xo phần cuối đuôi nên không tự bật được, 2 cánh khi bung tự động bật xuống"
+            },
+            {
+                name: "(gen1) Pyrus Dharak",
+                img: "./images/dharakpyrus.jpg",
+                buyPrice: 200,
+                sellPrice: 200,
+                description: "[gundalian-invaders] ổn, 1 bên cánh khi bụng tự động bật xuống"
+            },
+            {
+                name: "(gen1) Subterra Dharak",
+                img: "./images/dharaksubterra.jpg",
+                buyPrice: 150,
+                sellPrice: 150,
+                description: "[gundalian-invaders] ổn, đẹp"
+            },
+            {
+                name: "(gen1) Ventus Dharak",
+                img: "./images/dharakventus.jpg",
+                buyPrice: 150,
+                sellPrice: 150,
+                description: "[gundalian-invaders] ổn, trầy hệ nhẹ"
+            },
+            {
+                name: "(gen1) Aquos Dharak 1",
+                img: "./images/dharakaquos1.jpg",
+                buyPrice: 285,
+                sellPrice: 285,
+                description: "[gundalian-invaders] Con này hàng order TL dìa nên đội phí ship, giá mua có 270 bath thôi, mà ta nói con này nó gỉ rồi có gãy nữa mà giá 285 muốn khóc hụ hụ, đinh tán"
+            },
+            {
+                name: "(gen1) Aquos Dharak 2",
+                img: "./images/dharakaquos2.jpg",
+                buyPrice: 180,
+                sellPrice: 180,
+                description: "[gundalian-invaders] Con này mua của shop VN, cay cái là order TL xong shop mới có con này, rẻ hơn tận 100k :||| cay quá nên lụm luôn khỏi ai giành, ốc tam giác"
+            },
+            {
+                name: "(gen1) Aquos Dharak (BakuBlue)",
+                img: "./images/dharakaquoslimited.jpg",
+                buyPrice: 268,
+                sellPrice: 268,
+                description: "[gundalian-invaders] Order Thái, 250 bath, ship về VN độn phí ship, hàng limited độ hiếm 8/10. 1 bên cánh gãy chốt hơi khó ball"
+            },
+            {
+                name: "(gen1) Aquos Dharak (BakuBlue) 2",
+                img: "./images/dharakaquoslimited2.jpg",
+                buyPrice: 200,
+                sellPrice: 200,
+                description: "[gundalian-invaders] mua ở VN, chốt cánh đẹp không gãy"
+            },
+            {
+                name: "(gen1) Haos Dharak (Evil Twin)",
+                img: "./images/dharakhaoslimitedpearl.jpg",
+                buyPrice: 240,
+                sellPrice: 240,
+                description: "[gundalian-invaders] Bid win ở VN, bảng Evil Twin"
+            },
+            {
+                name: "(gen1) Pyrus Dharak (Crimson & Pearl)",
+                img: "./images/dharakcrimson.jpg",
+                buyPrice: 400,
+                sellPrice: 400,
+                description: "[gundalian-invaders] Cuối cùng cũng tìm thấy Crimson and Pearl Dharak, dù không phải bản hiếm nhưng cũng cũng đi"
+            },
+            {
+                name: "(gen1) AirKor (gear)",
+                img: "./images/dharakgear.jpg",
+                buyPrice: 350,
+                sellPrice: 350,
+                description: "[gundalian-invaders] Gear của Dharak"
+            },
+            {
+                name: "(gen1) Spartablaster (gear)",
+                img: "./images/spartablaster.jpg",
+                buyPrice: 180,
+                sellPrice: 180,
+                description: "[gundalian-invaders] Gear của Contestir nhưng cho Dharak haos liệt cánh đeo"
+            },
+            {
+                name: "(gen1) Haos Jakalier (mobile)",
+                img: "./images/jakalier.jpg",
+                buyPrice: 183,
+                sellPrice: 183,
+                description: "[gundalian-invaders] Mobile Assaults đầu tiên, có vẻ hơi khó bung + hơi cũ"
+            },
+            {
+                name: "(gen1) Darkus Phantom Dharak + Lansor (gear)",
+                img: "./images/darkusPhantomDharakLansor.jpg",
+                buyPrice: 2500,
+                sellPrice: 2500,
+                description: "[gundalian-invaders] Cả set 2m5, Phantom lăn bung không nhạy lắm. Done! Xong các thế hệ Dharak"
+            },
+            {
+                name: "(gen1) Darkus Brawlacus Dharak (Colossus set)",
+                img: "./images/darkusDharakColossus.jpg",
+                buyPrice: 265,
+                sellPrice: 265,
+                description: "[gundalian-invaders] Dharak Colossus from Thailand, Dharak mất đuôi, đã \"hy sinh\" Dharak paint xauvl để thay đuôi cho Colossus. Mất tiêu hệ chỉ còn màu đen do tô lại cho đỡ thấy ghê"
+            },
+            {
+                name: "(gen1) Dharak Colossus",
+                img: "./images/dharakcar.jpg",
+                buyPrice: 150 + 450,
+                sellPrice: 150 + 450,
+                description: "[gundalian-invaders] Xe dharak 2/3 + 1/3 :))"
+            },
+            {
+                name: "(gen1) Darkus Razenoid (Diecast)",
+                img: "./images/razenoid.jpg",
+                buyPrice: 650,
+                sellPrice: 650,
+                description: "[mechtanium-surge] Dharak SS4 (?). Chân kim loại, khó bung. Cánh tay phải hơi lỏng, nhìn trực diện tổng thể thì hơi bị nghiêng sang bên trái. Đã được tô chi tiết sương sương :))"
+            },
+            {
+                name: "(gen2) Aquos Howlkor Ultra (AA)",
+                img: "./images/aquoshowlkorultra.jpg",
+                buyPrice: 67,
+                sellPrice: 67,
+                description: "[armored-alliance] gen2 thứ 2, mua vì bán set chung với Dharak BakuBlue đẹp"
+            },
+            {
+                name: "(gen2) Haos Colossus Core (Platinum) (fake? Shopee)",
+                img: "./images/colossushaosplatinum.jpg",
+                buyPrice: 150,
+                sellPrice: 150,
+                description: "[evolutions] Gồi luôn thua đời 1-0, không được Huyền vũ ròi"
+            },
+            {
+                name: "(gen2)  Darkus Turtonium Core",
+                img: "./images/turtoniumbattleplanet.jpg",
+                buyPrice: 80,
+                sellPrice: 80,
+                description: "[battle-planet] {Huyền vũ} tạm tạm đi"
+            },
+            {
+                name: "(gen2)  Diamond Haos Wrath Core (Platinum) (fake? Shopee)",
+                img: "./images/wrathhaosplatinum.jpg",
+                buyPrice: 150,
+                sellPrice: 150,
+                description: "[evolutions] bạch hổ tới đây. Shopee có fake kh ta :| nhìn màu không giống trên bakugandb lắm bây"
+            },
+            {
+                name: "(gen2) Pyrus Serpillious Ultra (EV)",
+                img: "./images/serpipyrus.jpg",
+                buyPrice: 150,
+                sellPrice: 150,
+                description: "[evolutions] Serpi hệ lửa shopee"
+            },
+            {
+                name: "(gen2) Aquos Serpillious Ultra",
+                img: "./images/serpiaquos.jpg",
+                buyPrice: 350,
+                sellPrice: 350,
+                description: "[geogan-rising] 'đủ' bộ Serpillious, không biết phải fake không do không thấy mã số :| ốc tam giác "
+            },
+            {
+                name: "(gen2) Ventus Serpillious Ultra",
+                img: "./images/serpiventus.jpg",
+                buyPrice: 400,
+                sellPrice: 400,
+                description: "[geogan-rising] ventus Serpi bản thường"
+            },
+            {
+                name: "(gen2) Ventus Serpillious Ultra (Elemental)",
+                img: "./images/serpi.jpg",
+                buyPrice: 630,
+                sellPrice: 630,
+                description: "[geogan-rising] thanh long tới đây. gen2 đầu tiên"
+            },
+            {
+                name: "(gen2) Diamond Ventus Serpillious Ultra (EV)",
+                img: "./images/serpidiamond.jpg",
+                buyPrice: 500,
+                sellPrice: 500,
+                description: "[evolutions] đánh dấu mốc mục tiêu full Serpi"
+            },
+            {
+                name: "(gen2) Darkus Serpillious Ultra (EV)",
+                img: "./images/serpidarkus.jpg",
+                buyPrice: 150,
+                sellPrice: 150,
+                description: "[evolutions] gen2 thứ 4, mua vì vừa là lính bóng tối vừa là Serpillious :))"
+            },
+            {
+                name: "(gen2) Darkus Neo Nillious Core (LE Platinum)",
+                img: "./images/platinumneonillious.jpg",
+                buyPrice: 500,
+                sellPrice: 500,
+                description: "[legends] gen2 thứ bao nhiêu không đếm nữa :)), có kim loại cầm đầm tay, như mới"
+            },
+            {
+                name: "(gen2) Darkus Neo Nillious Core (Platinum)",
+                img: "./images/platinumneonillious2.jpg",
+                buyPrice: 380,
+                sellPrice: 380,
+                description: "[evolutions] 2 con neo nillious"
+            },
+            {
+                name: "(gen2) Darkus Genesis Nillious",
+                img: "./images/genesisnillious.jpg",
+                buyPrice: 300,
+                sellPrice: 300,
+                description: "[evolutions]"
+            },
+            {
+                name: "(gen2) Darkus Toronoid Ultra",
+                img: "./images/toronoiddarkus.jpg",
+                buyPrice: 230,
+                sellPrice: 230,
+                description: "[geogan-rising] gen2 thứ 3, mua vì để bắt đầu chuỗi {Arise} :))"
+            },
+            {
+                name: "(gen2 Geogan) Pyrus Talan (EV)",
+                img: "./images/talanpyrus.jpg",
+                buyPrice: 220,
+                sellPrice: 220,
+                description: "[evolutions] chu tước tới đây"
+            },
+            {
+                name: "(gen3) Darkus Black Smoke (fake? Shopee)",
+                img: "./images/blacksmoke.jpg",
+                buyPrice: 50,
+                sellPrice: 50,
+                description: "[unknow] gen3 đầu tiên. Mua trên shopee, không rõ có phải phiki hong, ốc tam giác"
+            },
+            {
+                name: "(gen3) Darkus Street Brawl Purple Gold SA Nillious",
+                img: "./images/streetbrawlpurplegoldsanillious.jpg",
+                buyPrice: 160,
+                sellPrice: 160,
+                description: "[unknow] gen3 thứ 2, mua để đổi thân với Black Smoke"
+            },
+            {
+                name: "(tech) Pyrus Flare Dragaon",
+                img: "./images/flaredragaon.jpg",
+                buyPrice: 200,
+                sellPrice: 200,
+                description: "[bakutech] tech đầu tiên"
+            },
+            {
+                name: "(tech) Darkus Destroy Munikis",
+                img: "./images/destroymunikis.jpg",
+                buyPrice: 150,
+                sellPrice: 150,
+                description: "[bakutech] ổn, hơi khó bung tay bên trái"
+            },
+            {
+                name: "(tech) Subterra Gavli Anacon",
+                img: "./images/gavlianacon.jpg",
+                buyPrice: 150,
+                sellPrice: 150,
+                description: "[bakutech] tech đất lấy cho đủ hệ :|"
+            },
+            {
+                name: "(tech) Aquos Saint Aquas (clear)",
+                img: "./images/saintaquos.jpg",
+                buyPrice: 150,
+                sellPrice: 150,
+                description: "[bakutech] clear đầu tiên"
+            },
+            {
+                name: "(tech) Haos Blan Shoult",
+                img: "./images/blanshoult.jpg",
+                buyPrice: 150,
+                sellPrice: 150,
+                description: "[bakutech] Thiện lương của Dio, sai đai trên đầu"
+            },
+            {
+                name: "(tech) Aquos Co Tanker",
+                img: "./images/cotanker.jpg",
+                buyPrice: 250,
+                sellPrice: 250,
+                description: "[bakutech]"
+            },
+            {
+                name: "(tech) Subterra Ken Panzer",
+                img: "./images/kenpanzer.jpg",
+                buyPrice: 250,
+                sellPrice: 250,
+                description: "[bakutech]"
+            },
+            {
+                name: "(tech) Darkus Dio Sivac",
+                img: "./images/diosivac.jpg",
+                buyPrice: 50,
+                sellPrice: 50,
+                description: "[bakutech] Bản ngã của Bland Shoult, phần chân bên phải bị lỗi"
+            },
+            {
+                name: "(tech) Pyrus Jigen Dragaon",
+                img: "./images/jigendragaon.jpg",
+                buyPrice: 850,
+                sellPrice: 850,
+                description: "[bakutech] Trời ơi định để tiền mua Zeta mà va phải con nì 850 :| bị hư ngay tay đã fix tạm"
+            },
+            {
+                name: "(tech) Pyrus Jigen Dragaon (ngọc xanh lá)",
+                img: "./images/jigendragaonxanhla.jpg",
+                buyPrice: 1400,
+                sellPrice: 1400,
+                description: "[bakutech] Jigen Dragaon ngọc xanh lá, hơi chua"
+            },
+            {
+                name: "(tech) Pyrus Go Dragaon",
+                img: "./images/godragaon.jpg",
+                buyPrice: 1150,
+                sellPrice: 1150,
+                description: "[bakutech] Go Dragaon, cái part đuôi hong hiểu sao hơi cứng, bung hơi khó"
+            },
+            {
+                name: "(tech) Pyrus Bujin Dragaon",
+                img: "./images/bunjindragaon01.jpg",
+                buyPrice: 2000,
+                sellPrice: 2000,
+                description: "[bakutech] Bujin Dragaon MG còn 1 tí, hệ còn, hơi hơi ổn"
+            },
+            {
+                name: "(tech) Darkus Jiba Dragaon (custom Jiba Dragaon-God Three)",
+                img: "./images/jibafudopaint.jpg",
+                buyPrice: 245 + 430 + 300 + 400,
+                sellPrice: 245 + 430 + 300 + 400,
+                description: "[bakutech] Tạm tính: (245 đuôi Jiba, 430 đầu Jigen, 300 cọc sơn, 400 sơn lần 2). {Nguyên khối} Thợ nói không có dán keo mà sao tách không ra, rén tay quá nên thôi để nguyên luôn :))"
+            },
+            {
+                name: "(tech) Ventus Jigen Garyu (God Three)",
+                img: "./images/jigengaryu.jpg",
+                buyPrice: 3400,
+                sellPrice: 3400,
+                description: "[bakutech] đại đại đi, do trục trặc khi mua nên có 'lỗi' :) không vui lắm"
+            },
+            {
+                name: "(tech) Haos Go Fudo (God Three)",
+                img: "./images/gofudo.jpg",
+                buyPrice: 1700,
+                sellPrice: 1700,
+                description: "[bakutech] hệ hơi trầy nhẹ, mua chung vs con God xanh lá nên không vui lây"
+            },
+            {
+                name: "(tech) Pyrus Jigen Dragaon (custom Friendship)",
+                img: "./images/jigendragaonfriendship.jpg",
+                buyPrice: 847,
+                sellPrice: 847,
+                description: "[bakutech] Bid Thái Lan, được sơn từ Jigen Dragaon thường bởi thợ sơn Thái Lan Chữ tàu dán, hệ bị xoay nghiên không như mẫu. Bị gãy 2 vay bên 2 tay. Bị gãy chốt 2 bên cánh ở đuôi nên đã 502 lại, không thể chuyển dạng phần đuôi, bị dính keo không thể tách ra làm đôi, nói chung là xứng đáng để được đem đi paint :))"
+            },
+            {
+                name: "(tech) Darkus Zeta Munikis (custom Friendship)",
+                img: "./images/zetamunikisfriendship.jpg",
+                buyPrice: 3600,
+                sellPrice: 3600,
+                description: "[bakutech] Sơn từ Zeta Munikis màu xanh (gốc), phần màu trắng ở đuôi hơi ố với có trầy vài chỗ, vẫn oke"
+            },
+            {
+                name: "(tech) Terra Jiba Fudo",
+                img: "./images/jibafudo.jpg",
+                buyPrice: 500,
+                sellPrice: 500,
+                description: "[bakutech] done, đủ hệ tech b3"
+            },
+            {
+                name: "(tech) Aquos Go Garyu",
+                img: "./images/gogaryu.jpg",
+                buyPrice: 800,
+                sellPrice: 800,
+                description: "[bakutech] on cá xanh xanh có cái đuôi cam cam, mua 1 lần 1m6 chung với Gaga Horus"
+            },
+            {
+                name: "(tech) Pyrus Gaga Horus (Bay mất tiêu hệ rùi 😭)",
+                img: "./images/gagahorus.jpg",
+                buyPrice: 800,
+                sellPrice: 800,
+                description: "[bakutech] Con chim cam cam có cái đuôi xanh xanh, mua 1 lần 1m6 chung với Go Garyu. Huhu không để ý cầm vô hệ nhiều quá bay mất tiêu rùi"
+            },
+            
+            {
+                name: "Dharak (card)",
+                img: "./images/cardDharak30.JPG",
+                buyPrice: 30,
+                sellPrice: 30,
+                description: "Card Dharak"
+            },
+            {
+                name: "Flare Dragaon (card)",
+                img: "./images/cardDragaon40.JPG",
+                buyPrice: 40,
+                sellPrice: 40,
+                description: "Card Flare Dragaon"
+            },
+            {
+                name: "Blan Shoult (card)",
+                img: "./images/cardBlan50.JPG",
+                buyPrice: 50,
+                sellPrice: 50,
+                description: "Card Blan Shoult"
+            },
+            {
+                name: "Jigen Dragaon (custom print card)",
+                img: "./images/cardDragaonPrint50.JPG",
+                buyPrice: 50,
+                sellPrice: 50,
+                description: "Card Jigen Dragaon"
+            },
+            {
+                name: "Zeta Munikis (custom print card)",
+                img: "./images/cardZetaPrint50.JPG",
+                buyPrice: 50,
+                sellPrice: 50,
+                description: "Card Zeta Munikis"
+            },
+            {
+                name: "Jigen Dragaon X Zeta Munikis (custom print card)",
+                img: "./images/cardDragaonZetaPrint50.JPG",
+                buyPrice: 50,
+                sellPrice: 50,
+                description: "Card Jigen Dragaon x Zeta Munikis"
+            },
+            {
+                name: "(Bakugan) Ironman",
+                img: "./images/ironman.jpg",
+                buyPrice: 450,
+                sellPrice: 450,
+                description: "hehe Ironman. I love you 3000"
+            },
+            {
+                name: "(Galaxia) Apollo",
+                img: "./images/galaxiaApollo.jpg",
+                buyPrice: 114,
+                sellPrice: 114,
+                description: "Mua 3 con 150, ship 27, bán 2 con 90+freeship (ship 27) => Apollo 60 + 54 ship"
+            },
+            {
+                name: "Hộp 15 ô A81 (2 cái)",
+                img: "./images/Hop30.JPG",
+                buyPrice: 30 + 30,
+                sellPrice: 30 + 30,
+                description: "Hộp đựng 15 ô A81"
+            },
+            {
+                name: "Hộp trong suốt",
+                img: "./images/Hop75.JPG",
+                buyPrice: 75,
+                sellPrice: 75,
+                description: "Hộp trong suốt trưng được khoảng 6 con tech b3"
+            },
+            {
+                name: "Hộp trưng 2 tầng",
+                img: "./images/hop100.jpg",
+                buyPrice: 100,
+                sellPrice: 100,
+                description: "Hộp mua của GB, bị gãy chốt mở cửa nên giá 100 cũng ổn, bonus thêm 2 đèn"
+            },
+            {
+                name: "Hộp INOX tròn",
+                img: "./images/hopinox30.jpg",
+                buyPrice: 30*3,
+                sellPrice: 30*3,
+                description: "Hộp đựng vừa B3, 1 con/hộp"
+            },
+            {
+                name: "Tiền lỗ (ship, tiền lỗ khi bán hàng,v.v...)",
+                img: "./comingsoon.avif",
+                buyPrice: 290,
+                sellPrice: 0,
+                description: "Tiền này bao gồm tiền ship, tiền chênh lệch giữa khi mua và khi bán baku, ừ thì là dị đó :)), tiền ship thì lâu lâu mới tính"
+            },
+            {
+                name: "(tech) Pyrus Jigen Dragaon (xác :)) )",
+                img: "./images/jigendragaoncustomxau.jpg",
+                buyPrice: 500+50+20,
+                sellPrice: 500+50+20,
+                description: "[bakutech] Định mua về tự custom thành bản cờ Nhật Bản, nhưng tự paint xấu quá nên coi như vứt r :)) lợn lành thành lợn què thành xác :)). Bay 500 tiền mua với 70 tiền tự sơn. Gãy chốt không ball được nên thành xác"
+            },
+            {
+                name: "(gen1) Dragonoid Colossus (xác)",
+                img: "./images/dragonoidcolossusxac.JPG",
+                buyPrice: 110 + 240,
+                sellPrice: 110 + 240,
+                description: "[gundalian-invaders] Đuôi Dragonoid Colossus (ổn) 110, body (xác) 240."
+            },
+        ];
+
+        const soldproducts = [
+            {
+                soldname: "(gen1) Abis Omega Ventus (clear)",
+                soldimg: "./images/abisomegaventusclear.jpg",
+                soldbuyPrice: 180,
+                soldsellPrice: 110,
+                solddescription: "Rắn lục clear.",
+                soldnote: 'Abis clear mua 180 bán 110 (120 nhưng bao 10k ship): lỗ 70'
+            },
+            {
+                soldname: "(gen1) Pyrus Helix & gear",
+                soldimg: "./images/Helixgear0dong.JPG",
+                soldbuyPrice: 0,
+                soldsellPrice: 330,
+                solddescription: "Nói chung là :)) 0đ :))",
+                soldnote: 'Bán được 330 (350 nhưng fs): lời 350'
+            },
+            {
+                soldname: "(gen1) JetKor (gear fake)",
+                soldimg: "./images/jetkor.jpg",
+                soldbuyPrice: 90,
+                soldsellPrice: 15,
+                solddescription: "bán chung đám xác khi mua collosus dharak, 40k fs 25k dui dẻ thui :))",
+                soldnote: 'Bán được 15 (40 nhưng fs): lỗ nặng, kệ vui vẻ'
+            },
+            {
+                soldname: "đống xác",
+                soldimg: "./images/dongxac.jpg",
+                soldbuyPrice: 0,
+                soldsellPrice: 0,
+                solddescription: "bán chung JetKor gear fake",
+                soldnote: 'như trên'
+            },
+            {
+                soldname: "(tech) Ventus Van Falco (clear)",
+                soldimg: "./images/vanfalco.jpg",
+                soldbuyPrice: 150,
+                soldsellPrice: 200,
+                solddescription: "[bakutech]",
+                soldnote: "falco"
+            },
+            {
+                soldname: "(tech) Haos Kilan Leoness (clear)",
+                soldimg: "./images/kinlanleoness.jpg",
+                soldbuyPrice: 250,
+                soldsellPrice: 200,
+                solddescription: "[bakutech]",
+                soldnote: "leoness"
+            },
+            {
+                soldname: "Saint X Leoness X Falco (card)",
+                soldimg: "./images/cardSaintLeonessFalco50.JPG",
+                soldbuyPrice: 50,
+                soldsellPrice: 0,
+                solddescription: "Card Saint Aquos X Kinlan Leoness X Van Falco",
+                soldnote: "3 tech card"
+            },
+        ]
+
+        // Hàm render sản phẩm từ mảng
+        function renderProducts() {
+            const productList = document.getElementById('productList');
+            productList.innerHTML = ''; // Xóa danh sách hiện tại (nếu có)
+            var totalPrice = 0;
+            products.forEach((product, index) => {
+                const productHTML = `
+                    <div class="product">
+                        <input type="checkbox" class="checkboxProduct" id="product${index}" onchange="calculateTotal()">
+                        <img src="${product.img}" alt="${product.name}" onclick="showImage('${product.img}')">
+                        <h2>${product.name}</h2>
+                        <p class="old-price">Giá mua: ${product.buyPrice}000 VNĐ</p>
+                        <p class="price" hidden>Giá bán: ${product.sellPrice.toLocaleString()}000 VNĐ</p>
+                        <div class="description">Mô tả: ${product.description}</div>
+                    </div>
+                `;
+                productList.insertAdjacentHTML('beforeend', productHTML);
+
+                totalPrice = totalPrice + product.buyPrice;
+            });
+
+            console.log("Total: " + totalPrice);
+        }
+
+        // Gọi hàm render khi trang được tải
+        renderProducts();
+
+        function calculateTotal() {
+            let total = 0;
+            const checkboxes = document.querySelectorAll('#productList input[type="checkbox"]');
+            checkboxes.forEach((checkbox, index) => {
+                if (checkbox.checked) {
+                    total += products[index].buyPrice;
+                }
+            });
+            document.getElementById('totalPrice').innerText = total;
+            //console.log("Tổng tiền: " + total + "000 VNĐ");
+        }
+
+        function renderSoldProducts() {
+            const productList = document.getElementById('soldProductList');
+            productList.innerHTML = ''; // Xóa danh sách hiện tại (nếu có)
+            const notes = document.getElementById("notelo");
+            notes.innerHTML = '';
+            soldproducts.forEach(product => {
+                var diffPrice = 0;
+                diffPrice = product.soldsellPrice - product.soldbuyPrice;
+
+                const productHTML = `
+                    <div class="product" onclick="showImage('${product.soldimg}')">
+                        <img src="${product.soldimg}" alt="${product.soldname}">
+                        <h2>${product.soldname}</h2>
+                        <p class="sold-old-price">Giá mua: ${product.soldbuyPrice.toLocaleString()}000 VNĐ</p>
+                        <p class="sold-price">Giá bán: ${product.soldsellPrice.toLocaleString()}000 VNĐ</p>
+                        <p class="diff-price">Chênh lệch: ${diffPrice}000 VNĐ</p>
+                        <div class="description">Mô tả: ${product.solddescription}</div>
+                    </div>
+                `;
+                productList.insertAdjacentHTML('beforeend', productHTML);
+                
+                const noteHTML = `
+                    <li>
+                        <h5>${product.soldnote}</h5>
+                    </li>
+                `;
+
+                notes.insertAdjacentHTML('beforeend', noteHTML);
+            });
+        }
+
+        renderSoldProducts();
+
+        // Hàm lọc sản phẩm theo tìm kiếm
+        function filterProducts() {
+            const searchInput = document.getElementById('search').value.toLowerCase();
+            const products = document.querySelectorAll('.product');
+            
+            products.forEach(product => {
+                const productName = product.querySelector('h2').innerText.toLowerCase();
+                if (productName.includes(searchInput)) {
+                    product.style.display = '';
+                } else {
+                    product.style.display = 'none';
+                }
+            });
+        }
+
+        // Hiển thị ảnh trong lightbox
+        function showImage(src) {
+            const lightbox = document.getElementById('lightbox');
+            const lightboxImage = document.getElementById('lightboxImage');
+            lightboxImage.src = src;
+            lightbox.classList.add('active');
+        }
+
+        // Đóng lightbox
+        function closeImage() {
+            const lightbox = document.getElementById('lightbox');
+            lightbox.classList.remove('active');
+        }
+
+        // Ẩn giá mua ban đầu
+        const oldPrices = document.getElementsByClassName("old-price");
+
+        const soldoldPrices = document.getElementsByClassName("sold-old-price");
+        const soldPrices = document.getElementsByClassName("sold-price");
+        const solddiffPrices = document.getElementsByClassName("diff-price");
+        Array.from(oldPrices).forEach(function(oldPrice) {
+            oldPrice.hidden = true;
+        });
+
+        Array.from(soldoldPrices).forEach(function(oldPrice) {
+            oldPrice.hidden = true;
+        });
+        Array.from(soldPrices).forEach(function(oldPrice) {
+            oldPrice.hidden = true;
+        });      
+        Array.from(solddiffPrices).forEach(function(oldPrice) {
+            oldPrice.hidden = true;
+        });
+        // Hiển thị giá mua khi nhập đúng mật khẩu
+        function showOldPrices() {
+            const kwInput = document.getElementById('kwpassword').value;
+            Array.from(oldPrices).forEach(function(oldPrice) {
+                oldPrice.hidden = true;
+            });
+
+            Array.from(soldoldPrices).forEach(function(oldPrice) {
+                oldPrice.hidden = true;
+            });
+            Array.from(soldPrices).forEach(function(oldPrice) {
+                oldPrice.hidden = true;
+            });      
+            Array.from(solddiffPrices).forEach(function(oldPrice) {
+                oldPrice.hidden = true;
+            });
+            if (kwInput == "pd-easton") {
+                Array.from(oldPrices).forEach(function(oldPrice) {
+                    oldPrice.hidden = false;
+                });
+
+                Array.from(soldoldPrices).forEach(function(oldPrice) {
+                    oldPrice.hidden = false;
+                });
+                Array.from(soldPrices).forEach(function(oldPrice) {
+                    oldPrice.hidden = false;
+                });      
+                Array.from(solddiffPrices).forEach(function(oldPrice) {
+                    oldPrice.hidden = false;
+                });
+                document.getElementById("showSelectedPrice").hidden = false;
+            }
+            else {
+                document.getElementById("showSelectedPrice").hidden = true;
+            }
+        }
+
+        function clearSelections() {
+            const checkboxes = document.querySelectorAll('#productList input[type="checkbox"]');
+            checkboxes.forEach(checkbox => {
+                checkbox.checked = false;
+            });
+            calculateTotal();
+        }
+
+        function SelectAll() {
+            const checkboxes = document.querySelectorAll('#productList input[type="checkbox"]');
+            checkboxes.forEach(checkbox => {
+                checkbox.checked = true;
+            });
+            calculateTotal();
+        }
+    </script>
+
+</body>
+</html>
