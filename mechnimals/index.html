@@ -88,7 +88,12 @@
             justify-content: center;
             align-items: center;
             z-index: 1000;
+            cursor: pointer;
         }
+        .lightbox img {
+            pointer-events: auto;
+        }
+
 
         .lightbox.active {
             display: flex;
@@ -146,6 +151,25 @@
         label {
             cursor: pointer;
         }
+
+        .lightbox button {
+            position: absolute;
+            top: 50%;
+            background-color: rgba(255,255,255,0.7);
+            border: none;
+            font-size: 30px;
+            padding: 10px;
+            cursor: pointer;
+            z-index: 1001;
+            transform: translateY(-50%);
+            border-radius: 50%;
+        }
+        #prevBtn {
+            left: 20px;
+        }
+        #nextBtn {
+            right: 20px;
+        }
     </style>
 </head>
 <body>
@@ -169,9 +193,12 @@
     Note "Lỗ":
         <ul id="notelo"></ul>
 
-    <div class="lightbox" id="lightbox" onclick="closeImage()">
-        <img id="lightboxImage" src="" alt="">
-    </div>
+        <div class="lightbox" id="lightbox" onclick="closeImage()">
+            <button id="prevBtn" onclick="prevImage(event)">&#10094;</button>
+            <img id="lightboxImage" src="" alt="" onclick="event.stopPropagation()">
+            <button id="nextBtn" onclick="nextImage(event)">&#10095;</button>
+        </div>
+
 
     <div class="fixed-summary">
         <h3 id="showSelectedPrice" hidden><span id="totalPrice">0</span>000 VNĐ</h3>
@@ -180,6 +207,9 @@
     </div>
 
     <script>
+        let currentImages = [];
+        let currentImageIndex = 0;
+
         // Mảng chứa dữ liệu sản phẩm
         const products = [
             {
@@ -188,6 +218,7 @@
                 buyPrice: 450,
                 sellPrice: 450,
                 description: "Gãy rùi, in 3d như ",
+                images: ["./images/cstt_mini.JPG"]
             },
             {
                 name: "Cá sấu thần thánh (đúc)",
@@ -195,6 +226,21 @@
                 buyPrice: 900,
                 sellPrice: 900,
                 description: "Hàng đúc, sơn ok, nhìn mặt dưới hơi xấu",
+                images: ["./images/cstt_duc.JPG"]
+            },
+            {
+                name: "Chiến thần tận thế (2nd)",
+                img: "./images/cttt_1_3.jpg",
+                buyPrice: 1700,
+                sellPrice: 1700,
+                description: "Hàng 2nd, bị tróc sơn vài chỗ theo thời gian chơi, nobox",
+                images: [
+                    "./images/cttt_1_1.jpg",
+                    "./images/cttt_1_2.jpg",
+                    "./images/cttt_1_3.jpg",
+                    "./images/cttt_1_4.jpg",
+                    "./images/cttt_1_5.jpg",
+                ]
             },
         ];
 
@@ -220,7 +266,7 @@
                 const productHTML = `
                     <div class="product">
                         <input type="checkbox" class="checkboxProduct" id="product${index}" onchange="calculateTotal()">
-                        <img src="${product.img}" alt="${product.name}" onclick="showImage('${product.img}')">
+                        <img src="${product.img}" alt="${product.name}" onclick='showImageSlider(${JSON.stringify(product.images)})'>
                         <h2>${product.name}</h2>
                         <p class="old-price">Giá mua: ${product.buyPrice}000 VNĐ</p>
                         <p class="price" hidden>Giá bán: ${product.sellPrice.toLocaleString()}000 VNĐ</p>
@@ -262,6 +308,7 @@
                 const productHTML = `
                     <div class="product" onclick="showImage('${product.soldimg}')">
                         <img src="${product.soldimg}" alt="${product.soldname}">
+                        <img src="${product.soldimg}" alt="${product.soldname}" onclick='showImageSlider(${JSON.stringify(product.images)})'>
                         <h2>${product.soldname}</h2>
                         <p class="sold-old-price">Giá mua: ${product.soldbuyPrice.toLocaleString()}000 VNĐ</p>
                         <p class="sold-price">Giá bán: ${product.soldsellPrice.toLocaleString()}000 VNĐ</p>
@@ -299,18 +346,42 @@
         }
 
         // Hiển thị ảnh trong lightbox
+        /*
         function showImage(src) {
             const lightbox = document.getElementById('lightbox');
             const lightboxImage = document.getElementById('lightboxImage');
             lightboxImage.src = src;
             lightbox.classList.add('active');
         }
+        */
+        function showImageSlider(images, startIndex = 0) {
+            currentImages = images;
+            currentImageIndex = startIndex;
+            const lightbox = document.getElementById('lightbox');
+            const lightboxImage = document.getElementById('lightboxImage');
+            lightboxImage.src = currentImages[currentImageIndex];
+            lightbox.classList.add('active');
+        }
+
+        function prevImage(event) {
+            event.stopPropagation(); // Ngăn đóng lightbox khi bấm nút
+            if (currentImages.length === 0) return;
+            currentImageIndex = (currentImageIndex - 1 + currentImages.length) % currentImages.length;
+            document.getElementById('lightboxImage').src = currentImages[currentImageIndex];
+        }
+
+        function nextImage(event) {
+            event.stopPropagation();
+            if (currentImages.length === 0) return;
+            currentImageIndex = (currentImageIndex + 1) % currentImages.length;
+            document.getElementById('lightboxImage').src = currentImages[currentImageIndex];
+        }
 
         // Đóng lightbox
         function closeImage() {
-            const lightbox = document.getElementById('lightbox');
-            lightbox.classList.remove('active');
+            document.getElementById('lightbox').classList.remove('active');
         }
+
 
         // Ẩn giá mua ban đầu
         const oldPrices = document.getElementsByClassName("old-price");
