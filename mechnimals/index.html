@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Danh Sách Chiến cơ</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f8f9fa;
+            margin: 0;
+            padding: 20px;
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+        .search-container {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .search-container input {
+            padding: 10px;
+            width: 300px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        .product-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        .product {
+            background: white;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            margin: 10px;
+            padding: 15px;
+            width: 200px;
+            text-align: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: relative;
+            overflow: hidden;
+            transition: transform 0.2s;
+        }
+        .product img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 5px;
+        }
+        .product:hover {
+            transform: scale(1.05);
+        }
+        .price, .sold-price {
+            color: #28a745;
+            font-weight: bold;
+        }
+        .old-price, .sold-old-price {
+            color: #dc3545;
+        }
+        /*
+        .description {
+            display: none;
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(255, 255, 255, 0.9);
+            padding: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+            text-align: left;
+            border-radius: 8px;
+        }
+        
+        .product:hover .description {
+            display: block;
+        }
+        */
+        .lightbox {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .lightbox.active {
+            display: flex;
+        }
+
+        .lightbox img {
+            max-width: 90%;
+            max-height: 90%;
+            border-radius: 8px;
+        }
+
+        .fixed-summary {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: #fff;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            padding: 15px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            z-index: 1000;
+            width: 200px;
+            text-align: center;
+        }
+        .fixed-summary button {
+            margin-top: 10px;
+            padding: 5px 10px;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+        .fixed-summary button#clearAll {
+            background: #dc3545;
+        }
+        .fixed-summary button#clearAll:hover {
+            background: #c82333;
+        }
+
+        .fixed-summary button#selectAll {
+            background: #35dc6d;
+        }
+        .fixed-summary button#selectAll:hover {
+            background: #2ec823;
+        }
+
+        .checkboxProduct {
+            width: 20px;
+            height: 20px;
+            accent-color: #28a745;
+            cursor: pointer;
+        }
+
+        label {
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Danh sách Chiến cơ sở hữu</h1>
+    
+    <div class="search-container">
+        <input type="text" id="search" placeholder="Tìm kiếm bakugan/bakutech/trap/gear..." onkeyup="filterProducts()">
+        <input type="text" id="kwpassword" placeholder="key" onkeyup="showOldPrices()">
+    </div>
+
+    <div class="product-container" id="productList">
+        <!-- Sản phẩm sẽ được thêm từ JavaScript -->
+    </div>
+
+    Đã bán
+    <div class="product-container" id="soldProductList">
+        
+    </div>
+
+    Note "Lỗ":
+        <ul id="notelo"></ul>
+
+    <div class="lightbox" id="lightbox" onclick="closeImage()">
+        <img id="lightboxImage" src="" alt="">
+    </div>
+
+    <div class="fixed-summary">
+        <h3 id="showSelectedPrice" hidden><span id="totalPrice">0</span>000 VNĐ</h3>
+        <button id="selectAll" onclick="SelectAll()">Select All</button>
+        <button id="clearAll" onclick="clearSelections()">Clear All</button>
+    </div>
+
+    <script>
+        // Mảng chứa dữ liệu sản phẩm
+        const products = [
+            {
+                name: "Cá sấu thần thánh (in mini)",
+                img: "./images/cstt_mini.JPG",
+                buyPrice: 450,
+                sellPrice: 450,
+                description: "Gãy rùi, in 3d như ",
+            },
+            {
+                name: "Cá sấu thần thánh (đúc)",
+                img: "./images/cstt_duc.JPG",
+                buyPrice: 900,
+                sellPrice: 900,
+                description: "Hàng đúc, sơn ok, nhìn mặt dưới hơi xấu",
+            },
+        ];
+
+        const soldproducts = [
+        /*
+            {
+                soldname: "(gen1) DEMO",
+                soldimg: "./images/abisomegaventusclear.jpg",
+                soldbuyPrice: 180,
+                soldsellPrice: 110,
+                solddescription: "Rắn lục clear.",
+                soldnote: 'Abis clear mua 180 bán 110 (120 nhưng bao 10k ship): lỗ 70'
+            },
+            */
+        ]
+
+        // Hàm render sản phẩm từ mảng
+        function renderProducts() {
+            const productList = document.getElementById('productList');
+            productList.innerHTML = ''; // Xóa danh sách hiện tại (nếu có)
+            var totalPrice = 0;
+            products.forEach((product, index) => {
+                const productHTML = `
+                    <div class="product">
+                        <input type="checkbox" class="checkboxProduct" id="product${index}" onchange="calculateTotal()">
+                        <img src="${product.img}" alt="${product.name}" onclick="showImage('${product.img}')">
+                        <h2>${product.name}</h2>
+                        <p class="old-price">Giá mua: ${product.buyPrice}000 VNĐ</p>
+                        <p class="price" hidden>Giá bán: ${product.sellPrice.toLocaleString()}000 VNĐ</p>
+                        <div class="description">Mô tả: ${product.description}</div>
+                    </div>
+                `;
+                productList.insertAdjacentHTML('beforeend', productHTML);
+
+                totalPrice = totalPrice + product.buyPrice;
+            });
+
+            console.log("Total: " + totalPrice);
+        }
+
+        // Gọi hàm render khi trang được tải
+        renderProducts();
+
+        function calculateTotal() {
+            let total = 0;
+            const checkboxes = document.querySelectorAll('#productList input[type="checkbox"]');
+            checkboxes.forEach((checkbox, index) => {
+                if (checkbox.checked) {
+                    total += products[index].buyPrice;
+                }
+            });
+            document.getElementById('totalPrice').innerText = total;
+            //console.log("Tổng tiền: " + total + "000 VNĐ");
+        }
+
+        function renderSoldProducts() {
+            const productList = document.getElementById('soldProductList');
+            productList.innerHTML = ''; // Xóa danh sách hiện tại (nếu có)
+            const notes = document.getElementById("notelo");
+            notes.innerHTML = '';
+            soldproducts.forEach(product => {
+                var diffPrice = 0;
+                diffPrice = product.soldsellPrice - product.soldbuyPrice;
+
+                const productHTML = `
+                    <div class="product" onclick="showImage('${product.soldimg}')">
+                        <img src="${product.soldimg}" alt="${product.soldname}">
+                        <h2>${product.soldname}</h2>
+                        <p class="sold-old-price">Giá mua: ${product.soldbuyPrice.toLocaleString()}000 VNĐ</p>
+                        <p class="sold-price">Giá bán: ${product.soldsellPrice.toLocaleString()}000 VNĐ</p>
+                        <p class="diff-price">Chênh lệch: ${diffPrice}000 VNĐ</p>
+                        <div class="description">Mô tả: ${product.solddescription}</div>
+                    </div>
+                `;
+                productList.insertAdjacentHTML('beforeend', productHTML);
+                
+                const noteHTML = `
+                    <li>
+                        <h5>${product.soldnote}</h5>
+                    </li>
+                `;
+
+                notes.insertAdjacentHTML('beforeend', noteHTML);
+            });
+        }
+
+        renderSoldProducts();
+
+        // Hàm lọc sản phẩm theo tìm kiếm
+        function filterProducts() {
+            const searchInput = document.getElementById('search').value.toLowerCase();
+            const products = document.querySelectorAll('.product');
+            
+            products.forEach(product => {
+                const productName = product.querySelector('h2').innerText.toLowerCase();
+                if (productName.includes(searchInput)) {
+                    product.style.display = '';
+                } else {
+                    product.style.display = 'none';
+                }
+            });
+        }
+
+        // Hiển thị ảnh trong lightbox
+        function showImage(src) {
+            const lightbox = document.getElementById('lightbox');
+            const lightboxImage = document.getElementById('lightboxImage');
+            lightboxImage.src = src;
+            lightbox.classList.add('active');
+        }
+
+        // Đóng lightbox
+        function closeImage() {
+            const lightbox = document.getElementById('lightbox');
+            lightbox.classList.remove('active');
+        }
+
+        // Ẩn giá mua ban đầu
+        const oldPrices = document.getElementsByClassName("old-price");
+
+        const soldoldPrices = document.getElementsByClassName("sold-old-price");
+        const soldPrices = document.getElementsByClassName("sold-price");
+        const solddiffPrices = document.getElementsByClassName("diff-price");
+        Array.from(oldPrices).forEach(function(oldPrice) {
+            oldPrice.hidden = true;
+        });
+
+        Array.from(soldoldPrices).forEach(function(oldPrice) {
+            oldPrice.hidden = true;
+        });
+        Array.from(soldPrices).forEach(function(oldPrice) {
+            oldPrice.hidden = true;
+        });      
+        Array.from(solddiffPrices).forEach(function(oldPrice) {
+            oldPrice.hidden = true;
+        });
+        // Hiển thị giá mua khi nhập đúng mật khẩu
+        function showOldPrices() {
+            const kwInput = document.getElementById('kwpassword').value;
+            Array.from(oldPrices).forEach(function(oldPrice) {
+                oldPrice.hidden = true;
+            });
+
+            Array.from(soldoldPrices).forEach(function(oldPrice) {
+                oldPrice.hidden = true;
+            });
+            Array.from(soldPrices).forEach(function(oldPrice) {
+                oldPrice.hidden = true;
+            });      
+            Array.from(solddiffPrices).forEach(function(oldPrice) {
+                oldPrice.hidden = true;
+            });
+            if (kwInput == "pd-easton") {
+                Array.from(oldPrices).forEach(function(oldPrice) {
+                    oldPrice.hidden = false;
+                });
+
+                Array.from(soldoldPrices).forEach(function(oldPrice) {
+                    oldPrice.hidden = false;
+                });
+                Array.from(soldPrices).forEach(function(oldPrice) {
+                    oldPrice.hidden = false;
+                });      
+                Array.from(solddiffPrices).forEach(function(oldPrice) {
+                    oldPrice.hidden = false;
+                });
+                document.getElementById("showSelectedPrice").hidden = false;
+            }
+            else {
+                document.getElementById("showSelectedPrice").hidden = true;
+            }
+        }
+
+        function clearSelections() {
+            const checkboxes = document.querySelectorAll('#productList input[type="checkbox"]');
+            checkboxes.forEach(checkbox => {
+                checkbox.checked = false;
+            });
+            calculateTotal();
+        }
+
+        function SelectAll() {
+            const checkboxes = document.querySelectorAll('#productList input[type="checkbox"]');
+            checkboxes.forEach(checkbox => {
+                checkbox.checked = true;
+            });
+            calculateTotal();
+        }
+    </script>
+
+</body>
+</html>
