@@ -166,7 +166,7 @@
         
     </div>
 
-    Note "Lỗ":
+    Note "Lỗ": <span id="totalloprice"></span>000VNĐ
         <ul id="notelo"></ul>
 
     <div class="lightbox" id="lightbox" onclick="closeImage()">
@@ -365,13 +365,6 @@
                 description: "[gundalian-invaders] Gear của Contestir nhưng cho Dharak haos liệt cánh đeo"
             },
             {
-                name: "(gen1) Haos Jakalier (mobile)",
-                img: "./images/jakalier.jpg",
-                buyPrice: 183,
-                sellPrice: 183,
-                description: "[gundalian-invaders] Mobile Assaults đầu tiên, có vẻ hơi khó bung + hơi cũ"
-            },
-            {
                 name: "(gen1) Darkus Phantom Dharak + Lansor (gear)",
                 img: "./images/darkusPhantomDharakLansor.jpg",
                 buyPrice: 2500,
@@ -489,6 +482,13 @@
                 buyPrice: 300,
                 sellPrice: 300,
                 description: "[evolutions]"
+            },
+             {
+                name: "(gen2) Darkus Nillious Core",
+                img: "./images/darkusnilliouscore.JPG",
+                buyPrice: 65,
+                sellPrice: 65,
+                description: "[battle-planet]"
             },
             {
                 name: "(gen2) Darkus Neo Nillious Core (LE Platinum)",
@@ -608,20 +608,6 @@
                 buyPrice: 50,
                 sellPrice: 50,
                 description: "[bakutech] Bản ngã của Bland Shoult, phần chân bên phải bị lỗi"
-            },
-            {
-                name: "(tech) Aquos Co Tanker",
-                img: "./images/cotanker.jpg",
-                buyPrice: 250,
-                sellPrice: 250,
-                description: "[bakutech]"
-            },
-            {
-                name: "(tech) Subterra Ken Panzer",
-                img: "./images/kenpanzer.jpg",
-                buyPrice: 250,
-                sellPrice: 250,
-                description: "[bakutech]"
             },
             {
                 name: "(tech) Pyrus Jigen Dragaon",
@@ -872,6 +858,28 @@
                 solddescription: "Card Saint Aquos X Kinlan Leoness X Van Falco",
                 soldnote: "3 tech card"
             },
+            {
+                soldname: "(tech) Aquos Co Tanker",
+                soldimg: "./images/cotanker.jpg",
+                soldbuyPrice: 250,
+                soldsellPrice: 250,
+                solddescription: "[bakutech]"
+            },
+            {
+                soldname: "(tech) Subterra Ken Panzer",
+                soldimg: "./images/kenpanzer.jpg",
+                soldbuyPrice: 250,
+                soldsellPrice: 250,
+                solddescription: "[bakutech]"
+            },
+            {
+                soldname: "(gen1) Haos Jakalier (mobile)",
+                soldimg: "./images/jakalier.jpg",
+                soldbuyPrice: 183,
+                soldsellPrice: 0,
+                solddescription: "[gundalian-invaders] Mobile Assaults đầu tiên, có vẻ hơi khó bung + hơi cũ",
+                soldnote: "Tặng kèm 2 con tech"
+            },
         ]
 
         // Hàm render sản phẩm từ mảng
@@ -918,10 +926,11 @@
             productList.innerHTML = ''; // Xóa danh sách hiện tại (nếu có)
             const notes = document.getElementById("notelo");
             notes.innerHTML = '';
+            loprice = 0;
             soldproducts.forEach(product => {
                 var diffPrice = 0;
                 diffPrice = product.soldsellPrice - product.soldbuyPrice;
-
+                loprice = loprice + diffPrice;
                 const productHTML = `
                     <div class="product" onclick="showImage('${product.soldimg}')">
                         <img src="${product.soldimg}" alt="${product.soldname}">
@@ -942,6 +951,8 @@
 
                 notes.insertAdjacentHTML('beforeend', noteHTML);
             });
+            console.log("Tiền lỗi" + loprice);
+            document.getElementById("totalloprice").innerHTML = loprice;
         }
 
         renderSoldProducts();
